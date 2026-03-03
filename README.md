@@ -1,35 +1,70 @@
-# "김기현의 자연어 처리 딥러닝 캠프" 예제 코드 모음
+﻿# 가계부 앱 제작 정리 (Notion + Tistory용)
 
-한빛미디어에서 출판된 도서 "김기현의 자연어 처리 딥러닝 캠프" 내의 코드들을 모아 놓은 repo입니다.
-일부 챕터는 짧은 코드들로 구성이 되어 있어, Jupyter notebook을 공유 하였습니다.
-그리고 '텍스트 분류', '기계 번역'과 같이 프로젝트 단위의 코드는 깃허브 repo 주소를 공유 합니다.
+이 저장소는 기존 내용을 정리하고, 가계부 앱 제작 과정을 기록하기 위한 문서 전용 저장소로 재구성했습니다.
 
-이 책의 내용들은 패스트캠퍼스 강의에서도 만나보실 수 있습니다.
-- 입문반: [자연어 처리를 위한 딥러닝 CAMP](https://www.fastcampus.co.kr/data_camp_nlpbasic/)
-- 심화반: [PyTorch를 활용한 자연어 처리 심화 CAMP](https://www.fastcampus.co.kr/data_camp_nlpadv/)
+## Step 1. 목표 정의와 범위 확정
+- 핵심 목표: "가계부 입력 + 자산/투자 현황을 한 화면에서 확인".
+- 필수 기능 범위:
+  - 수입/지출/고정지출 입력
+  - 자산(은행/현금/카드/투자계좌) 관리
+  - 투자(수량, 평균매수가, 현재가, 수익률) 관리
+- 제외/보류 기능:
+  - 펀드 실시간 가격 조회(수동 업데이트로 운영)
 
-1. 딥러닝을 활용한 자연어처리
-2. 기초 수학
-3. Hello 파이토치
-4. 전처리
-  - https://github.com/kh-kim/simple-ntc/blob/master/data_loader.py
-  - https://github.com/kh-kim/OpenNLMTK/blob/master/data_loader.py
-  - https://github.com/kh-kim/simple-nmt/blob/master/data_loader.py
-5. 의미: 유사성과 모호성
-6. 워드 임베딩
-7. 시퀀스 모델링
-8. 텍스트 분류
-  - https://github.com/kh-kim/simple-ntc
-9. 언어 모델링
-  - https://github.com/kh-kim/simple-nmt/blob/master/simple_nmt/rnnlm.py
-10. 신경망 기계번역
-  - https://github.com/kh-kim/simple-nmt
-11. 신경망 기계번역 심화 주제
-12. 강화학습을 활용한 자연어생성
-  - https://github.com/kh-kim/simple-nmt
-13. 듀얼리티 활용하기
-  - https://github.com/kh-kim/simple-nmt
-14. 서비스 만들기
-15. 전이학습 활용하기
+## Step 2. 개발 환경 세팅
+- 백엔드: `FastAPI`, `SQLAlchemy`, `SQLite`
+- 프론트엔드: 단일 `index.html` + JS 렌더링
+- 패키징: `PyInstaller`로 Windows EXE 배포
+- 기본 실행 확인 체크:
+  - API health endpoint 확인
+  - UI endpoint 접속 확인
+  - EXE 실행 시 포트 충돌 여부 확인
 
-저자: 김기현(nlp.with.deep.learning@gmail.com)
+## Step 3. 데이터/도메인 설계
+- 자산(`Asset`): 이름, 유형, 잔액
+- 거래(`Transaction`): 날짜, 구분(수입/지출/투자), 금액, 자산 연결
+- 고정지출(`FixedExpense`): 월 범위, 금액, 카테고리
+- 투자(`Investment`): 심볼, 수량, 평균매수가, 현재가, ROI
+- 잔액 정책:
+  - 최종 잔액 = 현금성 자산 합계 - 미지출 고정비
+- 영속성 정책:
+  - EXE 업데이트와 분리된 경로에 DB 보관(데이터 유지)
+
+## Step 4. UI/기능 구현
+- 대시보드:
+  - 가용 현금 잔액 카드
+  - 월 수입/지출/미지출 고정비/최종 잔액 요약
+- 자산 UI:
+  - 유형별 배지 및 잔액 카드 시각화
+- 투자 UI:
+  - 포트폴리오 테이블(원금/평가금/손익/수익률)
+  - 주식/코인/ETF 실시간 가격 갱신
+  - 펀드 수동 현재가 반영
+- 안정화 포인트:
+  - 저장 후 해당 월 리스트 즉시 반영
+  - 빈 월 데이터 안내 메시지 처리
+
+## Step 5. 문서화(Notion + Tistory)
+### Notion 페이지 구성(권장)
+- 페이지 제목: `가계부 앱 개발 로그`
+- 섹션 템플릿:
+  - `문제 정의`
+  - `설계 결정`
+  - `구현 내용`
+  - `트러블슈팅`
+  - `회고/다음 작업`
+- DB(테이블) 속성 예시:
+  - 날짜, 작업유형(설계/구현/버그), 요약, 관련 커밋, 결과
+
+### Tistory 글 작성 구조(권장)
+1. 왜 만들었는지(배경/문제)
+2. 기술 스택과 구조 선택 이유
+3. 핵심 구현(잔액 계산, 투자 수익률, UI 포인트)
+4. 문제 해결(포트 충돌, EXE/DB 유지, 반영 이슈)
+5. 다음 개선 계획
+
+## 발행 체크리스트
+- [ ] 실행 화면 캡처(대시보드/투자/자산)
+- [ ] 계산 로직(최종 잔액, ROI) 예시 수치 포함
+- [ ] 트러블슈팅 전/후 비교 이미지 포함
+- [ ] Notion 링크와 GitHub 링크 함께 첨부
