@@ -63,3 +63,10 @@
 1. `http://127.0.0.1:8000/health` 확인 (`db_path` 확인)
 2. UI 강력 새로고침(`Ctrl+F5`) 후 테스트
 3. 삭제/동기화 이슈 재현 시 브라우저 콘솔 에러 + API 응답 detail 확인
+
+## 2026-03-03 22:24 (Asia/Seoul)
+
+### Follow-up Note
+- User requested persistent conversation logging again.
+- Confirmed policy: always read `docs/SESSION_LOG.md` first, then continue work.
+- `AGENTS.md` remains the startup rule for all future sessions in this folder.
