@@ -1,0 +1,28 @@
+﻿# Python cache
+__pycache__/
+*.py[cod]
+
+# Virtual env
+.venv/
+venv/
+
+# Build artifacts
+build/
+build_new/
+build_hotfix/
+dist/
+dist_new/
+dist_hotfix/
+
+# Runtime DB and local data
+data/*.db
+
+# Logs/temp
+*.log
+.tmp_*.txt
+.run_*.txt
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
