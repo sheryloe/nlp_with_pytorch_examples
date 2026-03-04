@@ -70,3 +70,40 @@
 - User requested persistent conversation logging again.
 - Confirmed policy: always read `docs/SESSION_LOG.md` first, then continue work.
 - `AGENTS.md` remains the startup rule for all future sessions in this folder.
+
+## 2026-03-04 22:02 (Asia/Seoul)
+
+### User Requests
+- GitHub `README.md`에 실제 사용법을 제대로 정리
+- 개인 사용 기준에서 API는 내부 호출용이라는 점 명확화
+- Notion에 가계부 제작 과정을 3-Step 상세 티스토리용 원고로 작성
+
+### Changes Applied
+- `README.md` 전면 개편
+  - 설치/실행, 첫 사용 3-Step, 백업/복원, DB 경로, 트러블슈팅 중심으로 재작성
+  - API는 외부 사용 대상이 아닌 내부 통신용임을 명시
+- 미사용 파일 정리
+  - `api.js` 삭제 (코드베이스 내 참조 없음 확인)
+- Notion 페이지 신규 작성
+  - URL: https://www.notion.so/31961b8ed53c813b903bfa2c53081f1d
+  - 제목: `티스토리 원고 | 로컬 가계부 웹앱 만들기 (3-Step, Donggri Ledger)`
+  - 내용: Step 1(백엔드), Step 2(프론트), Step 3(운영/배포) + 발행용 제목/태그/메타 설명
+
+### Results
+- README가 기술 나열 중심에서 사용자 실행 가이드 중심으로 변경됨
+- API 관련 오해 포인트(외부 API 직접 사용 필요 여부) 해소
+- 요청한 Notion용 상세 블로그 원고(3-Step) 작성 완료
+
+### Git
+- Base commit (작업 시작 시점):
+  - `5113bd07d476f9f43831acafea93530e663a7481`
+  - `docs: append repeat logging instruction note`
+- 변경 파일 경로:
+  - `README.md`
+  - `api.js` (deleted)
+  - `docs/SESSION_LOG.md`
+- 새 커밋: 없음 (working tree 변경 상태)
+
+### Remaining Issues
+- 필요 시 이번 변경을 커밋/푸시해서 GitHub README에 반영해야 함
+- 기존 Open Issue(실행 중 EXE로 인한 `dist` 잠금 가능성)는 여전히 유효
