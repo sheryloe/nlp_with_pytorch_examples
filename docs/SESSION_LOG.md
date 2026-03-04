@@ -107,3 +107,35 @@
 ### Remaining Issues
 - 필요 시 이번 변경을 커밋/푸시해서 GitHub README에 반영해야 함
 - 기존 Open Issue(실행 중 EXE로 인한 `dist` 잠금 가능성)는 여전히 유효
+
+## 2026-03-04 22:13 (Asia/Seoul)
+
+### User Requests
+- 변경사항 커밋 + 푸시
+- Notion 원고를 티스토리 최종 발행체(썸네일 문구/소제목 톤/CTA)로 재정리
+
+### Changes Applied
+- Git 커밋 수행
+  - `01110e45803bab9c4be08c6fcac2d4cdd6f1bc21`
+  - 메시지: `docs: rewrite README usage guide and remove unused api.js`
+  - 포함 파일: `README.md`, `api.js`(deleted), `docs/SESSION_LOG.md`
+- Push 시도 결과
+  - 실패: 원격 저장소(push destination) 미설정 (`git remote -v` 비어 있음)
+- Notion 원고 최종 발행체로 수정
+  - 페이지: https://www.notion.so/31961b8ed53c813b903bfa2c53081f1d
+  - 반영: 썸네일 문구 후보, 제목/부제 최종안, 소제목 톤 가이드, CTA 복붙 블록
+
+### Results
+- 로컬 커밋은 완료되어 변경사항이 저장됨
+- Notion 글은 티스토리 발행 직전 형태로 업데이트 완료
+- 푸시는 원격 저장소 URL 미설정으로 미완료
+
+### Git
+- 현재 HEAD:
+  - `01110e45803bab9c4be08c6fcac2d4cdd6f1bc21`
+- 작업 중 확인한 원인:
+  - `fatal: No configured push destination.`
+
+### Remaining Issues
+- 푸시 완료를 위해 원격 저장소 URL 설정 필요
+  - 예: `git remote add origin <repo-url>` 후 `git push -u origin master`
