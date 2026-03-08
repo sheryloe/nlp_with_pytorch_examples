@@ -177,3 +177,53 @@
 
 ### Remaining Issues
 - 없음
+
+## 2026-03-08 16:29 (Asia/Seoul)
+
+### User Requests
+- 신용카드는 사용 시점과 실제 출금 시점(다음달 결제)을 분리해 기록
+- 어떤 카드로 결제했는지 추적 가능하게 반영
+- 기존 즉시차감(통장/현금) 방식과 카드 지연결제 방식을 함께 지원
+
+### Changes Applied
+- 거래 모델/스키마 확장
+  - `payment_method`(asset/card), `card_asset_id`, `settlement_date`, `is_settled` 추가
+  - 파일: `app/models.py`, `app/schemas.py`
+- 카드 지연결제 정산 로직 구현
+  - 카드 결제는 입력 시 통장 차감하지 않고, `settlement_date` 도래 시 자동 차감
+  - 수정/삭제 시 결제완료 여부에 따라 잔액 역반영
+  - 카드 참조 거래까지 자산 삭제 방어/강제삭제 범위 반영
+  - 파일: `app/crud.py`
+- 기존 SQLite 자동 컬럼 추가 마이그레이션
+  - startup 시 `transactions` 테이블에 신규 컬럼 자동 추가
+  - 파일: `app/database.py`, `app/main.py`
+- UI/입력 흐름 개선
+  - 거래 입력에 지불방식(즉시/신용카드), 사용 카드, 결제일 추가
+  - 거래 목록에 `카드 -> 결제통장 (결제일, 결제상태)` 표시
+  - 월 요약에 `이번달 카드결제예정` 추가
+  - 가용현금 계산에 카드결제예정 차감 반영
+  - 파일: `web/index.html`
+
+### Verification
+- `py -m compileall app` 통과
+- 임시 DB 시나리오 검증 통과
+  - 카드 사용 등록 시 즉시 통장 미차감
+  - 결제일 도래 거래는 통장 차감
+  - 결제완료 거래 삭제 시 잔액 복원
+
+### Git
+- 기능 커밋:
+  - `fd76d291dd5cea769e39fbc2051157c559e3445e`
+  - `feat: support deferred credit-card settlement flow`
+- 원격 반영:
+  - `origin/master`에 push 완료
+- 관련 파일 경로:
+  - `app/models.py`
+  - `app/schemas.py`
+  - `app/crud.py`
+  - `app/database.py`
+  - `app/main.py`
+  - `web/index.html`
+
+### Remaining Issues
+- 카드 결제일은 현재 거래별 수동 입력 방식(카드별 고정 청구일 자동화는 미구현)
