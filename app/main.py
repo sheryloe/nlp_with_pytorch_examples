@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .database import engine, Base, DB_PATH
+from .database import engine, Base, DB_PATH, run_lightweight_migrations
 from .models import Asset, Transaction, FixedExpense, Investment, InvestmentTransaction, Budget, Category
 from .routers import assets
 from .routers import transactions
@@ -60,6 +60,7 @@ app.add_middleware(
 @app.on_event("startup")
 def startup():
     Base.metadata.create_all(bind=engine)
+    run_lightweight_migrations()
     seed_categories()
     print(f"Database table initialization completed. db={DB_PATH}")
 

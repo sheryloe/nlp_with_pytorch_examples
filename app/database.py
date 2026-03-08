@@ -101,3 +101,34 @@ def _set_sqlite_pragma(dbapi_connection, connection_record):
     cursor = dbapi_connection.cursor()
     cursor.execute("PRAGMA foreign_keys=ON;")
     cursor.close()
+
+
+def run_lightweight_migrations() -> None:
+    """Apply minimal additive schema updates for existing SQLite files."""
+    with engine.begin() as conn:
+        rows = conn.exec_driver_sql("PRAGMA table_info(transactions)").fetchall()
+        cols = {row[1] for row in rows}
+
+        if "payment_method" not in cols:
+            conn.exec_driver_sql(
+                "ALTER TABLE transactions ADD COLUMN payment_method TEXT NOT NULL DEFAULT 'asset'"
+            )
+        if "card_asset_id" not in cols:
+            conn.exec_driver_sql(
+                "ALTER TABLE transactions ADD COLUMN card_asset_id INTEGER"
+            )
+        if "settlement_date" not in cols:
+            conn.exec_driver_sql(
+                "ALTER TABLE transactions ADD COLUMN settlement_date DATE"
+            )
+        if "is_settled" not in cols:
+            conn.exec_driver_sql(
+                "ALTER TABLE transactions ADD COLUMN is_settled INTEGER NOT NULL DEFAULT 0"
+            )
+
+        conn.exec_driver_sql(
+            "UPDATE transactions SET payment_method='asset' WHERE payment_method IS NULL OR payment_method=''"
+        )
+        conn.exec_driver_sql(
+            "UPDATE transactions SET is_settled=0 WHERE is_settled IS NULL"
+        )

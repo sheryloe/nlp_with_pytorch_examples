@@ -1,4 +1,4 @@
-﻿from datetime import datetime
+﻿from datetime import datetime, date as dt_date
 import json
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote
@@ -20,6 +20,7 @@ def create_asset(db: Session, asset: schemas.AssetCreate) -> models.Asset:
 
 
 def get_assets(db: Session) -> list[models.Asset]:
+    settle_due_card_transactions(db)
     return db.query(models.Asset).order_by(models.Asset.id.desc()).all()
 
 
@@ -46,7 +47,14 @@ def delete_asset(db: Session, asset_id: int, force: bool = False) -> bool:
     if not obj:
         return False
 
-    tx_count = db.query(models.Transaction.id).filter(models.Transaction.asset_id == asset_id).count()
+    tx_count = (
+        db.query(models.Transaction.id)
+        .filter(
+            (models.Transaction.asset_id == asset_id)
+            | (models.Transaction.card_asset_id == asset_id)
+        )
+        .count()
+    )
     fx_count = db.query(models.FixedExpense.id).filter(models.FixedExpense.asset_id == asset_id).count()
     inv_count = db.query(models.Investment.id).filter(models.Investment.asset_id == asset_id).count()
 
@@ -54,7 +62,10 @@ def delete_asset(db: Session, asset_id: int, force: bool = False) -> bool:
     if has_refs and not force:
         latest_tx = (
             db.query(models.Transaction)
-            .filter(models.Transaction.asset_id == asset_id)
+            .filter(
+                (models.Transaction.asset_id == asset_id)
+                | (models.Transaction.card_asset_id == asset_id)
+            )
             .order_by(models.Transaction.date.desc(), models.Transaction.id.desc())
             .first()
         )
@@ -84,7 +95,14 @@ def delete_asset(db: Session, asset_id: int, force: bool = False) -> bool:
                 .delete(synchronize_session=False)
             )
 
-        db.query(models.Transaction).filter(models.Transaction.asset_id == asset_id).delete(synchronize_session=False)
+        (
+            db.query(models.Transaction)
+            .filter(
+                (models.Transaction.asset_id == asset_id)
+                | (models.Transaction.card_asset_id == asset_id)
+            )
+            .delete(synchronize_session=False)
+        )
         db.query(models.FixedExpense).filter(models.FixedExpense.asset_id == asset_id).delete(synchronize_session=False)
         db.query(models.Investment).filter(models.Investment.asset_id == asset_id).delete(synchronize_session=False)
 
@@ -97,28 +115,104 @@ def delete_asset(db: Session, asset_id: int, force: bool = False) -> bool:
 # ===============
 # Transactions
 # ===============
+def _effect(tx_type: str, amount: float) -> float:
+    return amount if tx_type == "income" else -amount
+
+
+def _normalize_payment_method(payment_method: str | None) -> str:
+    return "card" if payment_method == "card" else "asset"
+
+
+def _is_card_payment(payment_method: str, tx_type: str) -> bool:
+    return payment_method == "card" and tx_type in ("expense", "investment")
+
+
+def _validate_card_transaction(
+    db: Session,
+    *,
+    tx_type: str,
+    payment_method: str,
+    card_asset_id: int | None,
+    settlement_date: dt_date | None,
+) -> None:
+    if not _is_card_payment(payment_method, tx_type):
+        return
+    if card_asset_id is None:
+        raise ValueError("신용카드 결제는 카드 자산을 선택해야 합니다.")
+    card_asset = get_asset(db, card_asset_id)
+    if not card_asset:
+        raise ValueError("Card asset not found")
+    if (card_asset.type or "").lower() != "card":
+        raise ValueError("선택한 결제수단은 카드 자산이어야 합니다.")
+    if settlement_date is None:
+        raise ValueError("신용카드 결제 예정일을 입력해주세요.")
+
+
+def settle_due_card_transactions(db: Session, as_of: dt_date | None = None) -> int:
+    target_date = as_of or datetime.now().date()
+    due_txs = (
+        db.query(models.Transaction)
+        .filter(models.Transaction.payment_method == "card")
+        .filter(models.Transaction.is_settled == False)
+        .filter(models.Transaction.settlement_date.isnot(None))
+        .filter(models.Transaction.settlement_date <= target_date)
+        .all()
+    )
+
+    settled_count = 0
+    for tx in due_txs:
+        asset = get_asset(db, tx.asset_id)
+        if not asset:
+            continue
+        asset.balance = (asset.balance or 0) - tx.amount
+        tx.is_settled = True
+        settled_count += 1
+
+    if settled_count:
+        db.commit()
+    return settled_count
+
+
 def create_transaction(db: Session, tx: schemas.TransactionCreate) -> models.Transaction:
-    asset = get_asset(db, tx.asset_id)
-    if not asset:
+    settle_due_card_transactions(db)
+
+    settlement_asset = get_asset(db, tx.asset_id)
+    if not settlement_asset:
         raise ValueError("Asset not found")
 
+    payment_method = _normalize_payment_method(tx.payment_method)
+    if payment_method == "card" and tx.type == "income":
+        raise ValueError("수입은 신용카드 결제 방식으로 등록할 수 없습니다.")
+
+    _validate_card_transaction(
+        db,
+        tx_type=tx.type,
+        payment_method=payment_method,
+        card_asset_id=tx.card_asset_id,
+        settlement_date=tx.settlement_date,
+    )
+
+    is_card = _is_card_payment(payment_method, tx.type)
     obj = models.Transaction(
         date=tx.date,
         type=tx.type,
         asset_id=tx.asset_id,
+        payment_method=payment_method,
+        card_asset_id=tx.card_asset_id if is_card else None,
+        settlement_date=tx.settlement_date if is_card else None,
+        is_settled=False,
         category=tx.category,
         description=tx.description,
         amount=tx.amount,
     )
     db.add(obj)
 
-    # ?붿븸 ?곕룞: income(+), expense(-)
-    if tx.type == "income":
-        asset.balance = (asset.balance or 0) + tx.amount
-    elif tx.type == "expense":
-        asset.balance = (asset.balance or 0) - tx.amount
-    else:  # expense or investment
-        asset.balance = (asset.balance or 0) - tx.amount
+    if is_card:
+        if tx.settlement_date and tx.settlement_date <= datetime.now().date():
+            settlement_asset.balance = (settlement_asset.balance or 0) - tx.amount
+            obj.is_settled = True
+    else:
+        settlement_asset.balance = (settlement_asset.balance or 0) + _effect(tx.type, tx.amount)
 
     db.commit()
     db.refresh(obj)
@@ -126,6 +220,7 @@ def create_transaction(db: Session, tx: schemas.TransactionCreate) -> models.Tra
 
 
 def list_transactions(db: Session, limit: int = 200, offset: int = 0) -> list[models.Transaction]:
+    settle_due_card_transactions(db)
     return (
         db.query(models.Transaction)
         .order_by(models.Transaction.date.desc(), models.Transaction.id.desc())
@@ -136,52 +231,94 @@ def list_transactions(db: Session, limit: int = 200, offset: int = 0) -> list[mo
 
 
 def delete_transaction(db: Session, tx_id: int) -> bool:
+    settle_due_card_transactions(db)
+
     obj = db.query(models.Transaction).filter(models.Transaction.id == tx_id).first()
     if not obj:
         return False
 
     asset = get_asset(db, obj.asset_id)
+    payment_method = _normalize_payment_method(getattr(obj, "payment_method", "asset"))
+
     if asset:
-        # ??젣 ???붿븸 ?섎룎由ш린
-        if obj.type == "income":
-            asset.balance = (asset.balance or 0) - obj.amount
-        elif obj.type in ("expense", "investment"):
-            asset.balance = (asset.balance or 0) + obj.amount
-        
+        if _is_card_payment(payment_method, obj.type):
+            if obj.is_settled:
+                asset.balance = (asset.balance or 0) + obj.amount
+        else:
+            asset.balance = (asset.balance or 0) - _effect(obj.type, obj.amount)
 
     db.delete(obj)
     db.commit()
     return True
 
-def _effect(tx_type: str, amount: float) -> float:
-    return amount if tx_type == "income" else -amount  # expense/investment??-
 
 def update_transaction(db: Session, tx_id: int, patch: schemas.TransactionUpdate) -> models.Transaction | None:
+    settle_due_card_transactions(db)
+
     obj = db.query(models.Transaction).filter(models.Transaction.id == tx_id).first()
     if not obj:
         return None
 
-    old_asset_id, old_type, old_amount = obj.asset_id, obj.type, obj.amount
+    old_asset_id = obj.asset_id
+    old_type = obj.type
+    old_amount = obj.amount
+    old_payment_method = _normalize_payment_method(getattr(obj, "payment_method", "asset"))
+    old_is_settled = bool(getattr(obj, "is_settled", False))
+    old_card_asset_id = getattr(obj, "card_asset_id", None)
+    old_settlement_date = getattr(obj, "settlement_date", None)
+
     data = patch.model_dump(exclude_unset=True)
 
     new_asset_id = data.get("asset_id", old_asset_id)
     new_type = data.get("type", old_type)
     new_amount = data.get("amount", old_amount)
+    new_payment_method = _normalize_payment_method(data.get("payment_method", old_payment_method))
+    new_card_asset_id = data.get("card_asset_id", old_card_asset_id)
+    new_settlement_date = data.get("settlement_date", old_settlement_date)
+
+    if new_payment_method == "card" and new_type == "income":
+        raise ValueError("수입은 신용카드 결제 방식으로 등록할 수 없습니다.")
 
     old_asset = get_asset(db, old_asset_id)
     new_asset = get_asset(db, new_asset_id)
     if not old_asset or not new_asset:
         raise ValueError("Asset not found")
 
-    # 1) 湲곗〈 嫄곕옒 ?④낵 ?쒓굅
-    old_asset.balance = (old_asset.balance or 0) - _effect(old_type, old_amount)
+    _validate_card_transaction(
+        db,
+        tx_type=new_type,
+        payment_method=new_payment_method,
+        card_asset_id=new_card_asset_id,
+        settlement_date=new_settlement_date,
+    )
 
-    # 2) 嫄곕옒 ?댁슜 ?낅뜲?댄듃
+    # 1) 기존 거래 효과 제거
+    if _is_card_payment(old_payment_method, old_type):
+        if old_is_settled:
+            old_asset.balance = (old_asset.balance or 0) + old_amount
+    else:
+        old_asset.balance = (old_asset.balance or 0) - _effect(old_type, old_amount)
+
+    # 2) 거래 내용 업데이트
     for k, v in data.items():
         setattr(obj, k, v)
 
-    # 3) ??嫄곕옒 ?④낵 ?곸슜
-    new_asset.balance = (new_asset.balance or 0) + _effect(new_type, new_amount)
+    obj.payment_method = new_payment_method
+    now_date = datetime.now().date()
+
+    # 3) 새 거래 효과 적용
+    if _is_card_payment(new_payment_method, new_type):
+        obj.card_asset_id = new_card_asset_id
+        obj.settlement_date = new_settlement_date
+        should_settle = bool(new_settlement_date and new_settlement_date <= now_date)
+        obj.is_settled = should_settle
+        if should_settle:
+            new_asset.balance = (new_asset.balance or 0) - new_amount
+    else:
+        obj.card_asset_id = None
+        obj.settlement_date = None
+        obj.is_settled = False
+        new_asset.balance = (new_asset.balance or 0) + _effect(new_type, new_amount)
 
     db.commit()
     db.refresh(obj)

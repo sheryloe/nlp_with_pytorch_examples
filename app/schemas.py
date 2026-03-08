@@ -34,12 +34,16 @@ class AssetOut(AssetBase):
 # Transactions
 # ======================
 TransactionType = Literal["income", "expense", "investment"]  # transfer는 다음에
+TransactionPaymentMethod = Literal["asset", "card"]
 
 
 class TransactionBase(BaseModel):
     date: dt_date
     type: TransactionType
     asset_id: int
+    payment_method: TransactionPaymentMethod = "asset"
+    card_asset_id: Optional[int] = None
+    settlement_date: Optional[dt_date] = None
     category: Optional[str] = None
     description: Optional[str] = None
     amount: float = Field(..., gt=0)
@@ -51,6 +55,7 @@ class TransactionCreate(TransactionBase):
 
 class TransactionOut(TransactionBase):
     id: int
+    is_settled: bool
     created_at: datetime
 
     class Config:
@@ -60,6 +65,9 @@ class TransactionUpdate(BaseModel):
     date: Optional[dt_date] = None
     type: Optional[TransactionType] = None
     asset_id: Optional[int] = None
+    payment_method: Optional[TransactionPaymentMethod] = None
+    card_asset_id: Optional[int] = None
+    settlement_date: Optional[dt_date] = None
     category: Optional[str] = None
     description: Optional[str] = None
     amount: Optional[float] = Field(default=None, gt=0)

@@ -28,6 +28,10 @@ class Transaction(Base):
     date = Column(Date, nullable=False)
     type = Column(String, nullable=False)  # 'income', 'expense', 'transfer'
     asset_id = Column(Integer, ForeignKey("assets.id"), nullable=False)
+    payment_method = Column(String, nullable=False, default="asset")  # asset/card
+    card_asset_id = Column(Integer, nullable=True)
+    settlement_date = Column(Date, nullable=True)
+    is_settled = Column(Boolean, nullable=False, default=False)
     category = Column(String)  # '식비', '교통', '통신' 등
     description = Column(Text)  # 내용 설명
     amount = Column(Float, nullable=False)  # 금액

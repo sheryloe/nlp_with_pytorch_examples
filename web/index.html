@@ -626,6 +626,7 @@
             <div class="stat-card income"><div>이번달 수입</div><div id="val-inc" style="font-size:1.3rem; font-weight:800; color:var(--income);">0원</div></div>
             <div class="stat-card expense"><div>이번달 지출</div><div id="val-exp" style="font-size:1.3rem; font-weight:800; color:var(--expense);">0원</div></div>
             <div class="stat-card pending"><div>미지출 고정비</div><div id="val-pending" style="font-size:1.3rem; font-weight:800; color:#fb7185;">0원</div></div>
+            <div class="stat-card"><div>이번달 카드결제예정</div><div id="val-card-due" style="font-size:1.3rem; font-weight:800; color:#0ea5e9;">0원</div></div>
             <div class="stat-card cash"><div>최종 잔액(현금기준)</div><div id="val-bal" style="font-size:1.3rem; font-weight:800; color:var(--cash);">0원</div><div id="val-bal-sub" class="stat-sub">현금 합계 기준</div></div>
         </div>
 
@@ -634,9 +635,18 @@
                 <div class="form-control"><label>날짜</label><input type="date" id="t-date"></div>
                 <div class="form-group" style="display:flex; flex-direction:column; gap:5px; flex:1; min-width: 100px;">
                     <label style="font-size:0.8rem; font-weight:700; color:var(--text-sub);">구분</label>
-                    <select id="t-type" onchange="updateCatSelect()"><option value="expense">지출</option><option value="income">수입</option><option value="investment">투자</option></select>
+                    <select id="t-type" onchange="updateCatSelect(); updateTxPaymentControls();"><option value="expense">지출</option><option value="income">수입</option><option value="investment">투자</option></select>
                 </div>
-                <div class="form-control"><label>자산</label><select id="t-asset"></select></div>
+                <div class="form-control">
+                    <label>지불 방식</label>
+                    <select id="t-pay-method" onchange="updateTxPaymentControls()">
+                        <option value="asset">즉시 반영</option>
+                        <option value="card">신용카드 (다음달 결제)</option>
+                    </select>
+                </div>
+                <div class="form-control"><label id="t-asset-label">자산</label><select id="t-asset"></select></div>
+                <div class="form-control" id="t-card-wrap" style="display:none;"><label>사용 카드</label><select id="t-card"></select></div>
+                <div class="form-control" id="t-settle-wrap" style="display:none;"><label>결제일</label><input type="date" id="t-settle-date"></div>
                 <div class="form-control"><label>카테고리</label><select id="t-cat"></select></div>
                 <div class="form-control" style="flex:1.5;"><label>내용</label><input type="text" id="t-desc" placeholder="내용 입력"></div>
                 <div class="form-control"><label>금액</label><input type="number" id="t-amt" placeholder="0"></div>
@@ -648,7 +658,7 @@
         <div class="card" style="padding:0;">
             <div class="table-wrapper">
                 <table>
-                    <thead><tr><th>날짜</th><th>구분</th><th>자산</th><th>카테고리</th><th>내용</th><th style="text-align:right">금액</th><th style="text-align:center">-</th></tr></thead>
+                    <thead><tr><th>날짜</th><th>구분</th><th>결제수단</th><th>카테고리</th><th>내용</th><th style="text-align:right">금액</th><th style="text-align:center">-</th></tr></thead>
                     <tbody id="ledger-list"></tbody>
                 </table>
             </div>
@@ -871,6 +881,13 @@
     let db = JSON.parse(localStorage.getItem(DB_KEY)) || DEFAULT_DATA;
     if (!Array.isArray(db.assets)) db.assets = [];
     if (!Array.isArray(db.transactions)) db.transactions = [];
+    db.transactions = db.transactions.map((t) => ({
+        ...t,
+        paymentMethod: t.paymentMethod || "asset",
+        cardAssetId: t.cardAssetId ?? null,
+        settlementDate: t.settlementDate || "",
+        isSettled: Boolean(t.isSettled),
+    }));
     if (!Array.isArray(db.fixed)) db.fixed = [];
     if (!Array.isArray(db.investments)) db.investments = [];
     if (!db.budgets || typeof db.budgets !== "object") db.budgets = {};
@@ -974,6 +991,64 @@
         }, 0);
     }
 
+    function calcCardDueByMonth(monthStr) {
+        return db.transactions.reduce((sum, t) => {
+            if ((t.paymentMethod || "asset") !== "card") return sum;
+            if (t.isSettled) return sum;
+            if (!(t.settlementDate || "").startsWith(monthStr)) return sum;
+            return sum + Number(t.amount || 0);
+        }, 0);
+    }
+
+    function calcCardDueByCard(monthStr) {
+        const bucket = {};
+        db.transactions.forEach((t) => {
+            if ((t.paymentMethod || "asset") !== "card") return;
+            if (t.isSettled) return;
+            if (!(t.settlementDate || "").startsWith(monthStr)) return;
+            const cardKey = String(t.cardAssetId || 0);
+            bucket[cardKey] = (bucket[cardKey] || 0) + Number(t.amount || 0);
+        });
+        return bucket;
+    }
+
+    function defaultCardSettlementDate() {
+        const txDate = document.getElementById("t-date")?.value;
+        if (!txDate) return "";
+        const d = new Date(`${txDate}T12:00:00`);
+        if (Number.isNaN(d.getTime())) return "";
+        d.setMonth(d.getMonth() + 1);
+        return d.toISOString().slice(0, 10);
+    }
+
+    function updateTxPaymentControls() {
+        const typeSel = document.getElementById("t-type");
+        const paySel = document.getElementById("t-pay-method");
+        const cardWrap = document.getElementById("t-card-wrap");
+        const settleWrap = document.getElementById("t-settle-wrap");
+        const assetLabel = document.getElementById("t-asset-label");
+        const settleInput = document.getElementById("t-settle-date");
+        if (!typeSel || !paySel || !cardWrap || !settleWrap || !assetLabel || !settleInput) return;
+
+        const txType = typeSel.value;
+        if (txType === "income" && paySel.value === "card") {
+            paySel.value = "asset";
+        }
+        const isCardMode = paySel.value === "card";
+        cardWrap.style.display = isCardMode ? "flex" : "none";
+        settleWrap.style.display = isCardMode ? "flex" : "none";
+        assetLabel.innerText = isCardMode ? "결제 통장" : "자산";
+
+        if (isCardMode && !settleInput.value) {
+            settleInput.value = defaultCardSettlementDate();
+        }
+        if (!isCardMode) {
+            settleInput.value = "";
+            const cardSel = document.getElementById("t-card");
+            if (cardSel) cardSel.value = "";
+        }
+    }
+
     function formatDateTime(ts) {
         if (!ts) return "-";
         const d = new Date(ts);
@@ -1004,7 +1079,9 @@
         const baseDate = (!(currDate instanceof Date) || Number.isNaN(currDate.getTime())) ? new Date() : currDate;
         document.getElementById('t-date').valueAsDate = baseDate;
         document.getElementById('t-type').value = "expense";
+        document.getElementById('t-pay-method').value = "asset";
         updateCatSelect();
+        updateTxPaymentControls();
         document.getElementById('t-desc').value = "";
         document.getElementById('t-amt').value = "";
     }
@@ -1049,6 +1126,14 @@
     window.onload = () => {
         document.getElementById('t-date').valueAsDate = new Date();
         updateInvestmentPriceField();
+        updateTxPaymentControls();
+        document.getElementById('t-date').addEventListener('change', () => {
+            const payMethod = document.getElementById("t-pay-method")?.value || "asset";
+            const settleInput = document.getElementById("t-settle-date");
+            if (payMethod === "card" && settleInput && !settleInput.value) {
+                settleInput.value = defaultCardSettlementDate();
+            }
+        });
         (async () => {
             try {
                 await refreshFromApi();
@@ -1100,6 +1185,10 @@
             date: t.date,
             type: t.type,
             assetId: Number(t.asset_id),
+            paymentMethod: t.payment_method || "asset",
+            cardAssetId: t.card_asset_id ? Number(t.card_asset_id) : null,
+            settlementDate: t.settlement_date || "",
+            isSettled: Boolean(t.is_settled),
             category: t.category || "",
             desc: t.description || "",
             amount: Number(t.amount || 0),
@@ -1191,6 +1280,9 @@
             const date = document.getElementById('t-date').value;
             const type = document.getElementById('t-type').value; // expense/income/investment
             const assetId = Number(document.getElementById('t-asset').value);
+            const paymentMethod = document.getElementById('t-pay-method').value || "asset";
+            const cardAssetId = Number(document.getElementById('t-card').value);
+            const settlementDate = document.getElementById('t-settle-date').value;
             const cat = document.getElementById('t-cat').value;
             const desc = document.getElementById('t-desc').value;
             const amt = parseInt(document.getElementById('t-amt').value);
@@ -1200,26 +1292,51 @@
                 return;
             }
 
+            const selectedAsset = db.assets.find(a => a.id === assetId);
+            if (!selectedAsset) {
+                showToast("결제 자산을 선택해주세요");
+                return;
+            }
+
+            if (paymentMethod === "card") {
+                if (type === "income") {
+                    showToast("수입은 신용카드 결제로 등록할 수 없습니다");
+                    return;
+                }
+                if (!cardAssetId) {
+                    showToast("사용한 카드를 선택해주세요");
+                    return;
+                }
+                if (!settlementDate) {
+                    showToast("카드 결제일을 입력해주세요");
+                    return;
+                }
+                if ((selectedAsset.type || "").toLowerCase() === "card") {
+                    showToast("결제 통장은 카드가 아닌 은행/현금 자산으로 선택해주세요");
+                    return;
+                }
+            }
+
+            const payload = {
+                date,
+                type,
+                asset_id: assetId,
+                payment_method: paymentMethod,
+                category: cat,
+                description: desc,
+                amount: amt
+            };
+            if (paymentMethod === "card") {
+                payload.card_asset_id = cardAssetId;
+                payload.settlement_date = settlementDate;
+            }
+
             if (editingTxId) {
-                await apiPatch(`/api/transactions/${editingTxId}`, {
-                    date,
-                    type,
-                    asset_id: assetId,
-                    category: cat,
-                    description: desc,
-                    amount: amt
-                });
+                await apiPatch(`/api/transactions/${editingTxId}`, payload);
                 editingTxId = null;
                 setTxEditMode(false);   // <-- 추가
             } else {
-                await apiPost("/api/transactions", {
-                    date,
-                    type,
-                    asset_id: assetId,
-                    category: cat,
-                    description: desc,
-                    amount: amt
-                });
+                await apiPost("/api/transactions", payload);
             }
 
 
@@ -1277,10 +1394,16 @@
 
         document.getElementById('t-date').value = t.date;
         document.getElementById('t-type').value = t.type;
+        document.getElementById('t-pay-method').value = t.paymentMethod || "asset";
 
         updateCatSelect(); // type에 맞춰 t-cat 옵션 재생성
+        updateTxPaymentControls();
 
         document.getElementById('t-asset').value = String(t.assetId);
+        if (t.cardAssetId) {
+            document.getElementById('t-card').value = String(t.cardAssetId);
+        }
+        document.getElementById('t-settle-date').value = t.settlementDate || "";
 
         // 카테고리가 옵션에 없으면(삭제된 경우 등) 일단 공백 처리
         const catSel = document.getElementById('t-cat');
@@ -1619,6 +1742,23 @@
             if (oldVal && Array.from(sel.options).some(o => o.value === oldVal)) sel.value = oldVal;
         });
 
+        const cardSel = document.getElementById("t-card");
+        if (cardSel) {
+            const oldCard = cardSel.value;
+            cardSel.innerHTML = "";
+            db.assets
+                .filter(a => (a.type || "").toLowerCase() === "card")
+                .forEach((a) => {
+                    const opt = document.createElement("option");
+                    opt.value = a.id;
+                    opt.innerText = a.name;
+                    cardSel.appendChild(opt);
+                });
+            if (oldCard && Array.from(cardSel.options).some(o => o.value === oldCard)) {
+                cardSel.value = oldCard;
+            }
+        }
+
         // Fixed Cat Dropdown
         const fCat = document.getElementById('f-cat');
         fCat.innerHTML = ""; 
@@ -1639,24 +1779,42 @@
 
         // 현재 폼 상태가 비어있다면 업데이트 (편집중 아닐때만)
         if(!editingTxId) updateCatSelect();
+        updateTxPaymentControls();
         updateInvestmentPriceField();
 
         // 1. Asset Tray
         const tray = document.getElementById('asset-tray-display');
         const cashTotal = calcCashBalance();
         const pendingFixed = calcPendingFixedExpense(monthStr);
-        const safeBalance = cashTotal - pendingFixed;
+        const cardDue = calcCardDueByMonth(monthStr);
+        const safeBalance = cashTotal - pendingFixed - cardDue;
 
         tray.innerHTML = `
             <div class="asset-item total-cash">
                 <div class="asset-top">
-                    <div class="asset-name">가용 현금 잔액</div>
+                <div class="asset-name">가용 현금 잔액</div>
                     <span class="asset-type-badge cash">현금 기준</span>
                 </div>
                 <div class="asset-balance">${fmtCurrency(safeBalance)}</div>
-                <div class="asset-meta">현금합계 ${fmtCurrency(cashTotal)} - 미지출 고정비 ${fmtCurrency(pendingFixed)}</div>
+                <div class="asset-meta">현금합계 ${fmtCurrency(cashTotal)} - 미지출 고정비 ${fmtCurrency(pendingFixed)} - 카드결제예정 ${fmtCurrency(cardDue)}</div>
             </div>
         `;
+
+        const dueByCard = calcCardDueByCard(monthStr);
+        Object.keys(dueByCard).forEach((cardKey) => {
+            const cardAsset = db.assets.find(a => String(a.id) === String(cardKey));
+            if (!cardAsset) return;
+            tray.innerHTML += `
+                <div class="asset-item">
+                    <div class="asset-top">
+                        <div class="asset-name">${cardAsset.name}</div>
+                        <span class="asset-type-badge card">카드 결제예정</span>
+                    </div>
+                    <div class="asset-balance">${fmtCurrency(dueByCard[cardKey])}</div>
+                    <div class="asset-meta">${monthStr} 결제 예정</div>
+                </div>
+            `;
+        });
 
         db.assets
             .slice()
@@ -1699,7 +1857,11 @@
             if(t.type === 'income') mInc += t.amount;
             else if (t.type === 'expense') mExp += t.amount;
 
-            const assetName = db.assets.find(a => a.id == t.assetId)?.name || "-";
+            const settleAssetName = db.assets.find(a => a.id == t.assetId)?.name || "-";
+            const cardName = t.cardAssetId ? (db.assets.find(a => a.id == t.cardAssetId)?.name || "카드") : "";
+            const payLabel = (t.paymentMethod || "asset") === "card"
+                ? `${cardName} -> ${settleAssetName}${t.settlementDate ? ` (${t.settlementDate})` : ""}${t.isSettled ? " [결제완료]" : " [결제전]"}`
+                : settleAssetName;
             const typeLabel = t.type === "income" ? "수입" : t.type === "investment" ? "투자" : "지출";
             const typeColor = t.type === "income" ? "var(--income)" : t.type === "investment" ? "var(--invest)" : "var(--expense)";
 
@@ -1707,7 +1869,7 @@
                 <tr>
                     <td>${t.date.slice(5)}</td>
                     <td style="color:${typeColor}; font-weight:800;">${typeLabel}</td>
-                    <td>${assetName}</td>
+                    <td>${payLabel}</td>
                     <td>${t.category || "-"}</td>
                     <td>${t.desc || ""}</td>
                     <td style="text-align:right; font-weight:700;">${fmtCurrency(t.amount)}</td>
@@ -1722,8 +1884,9 @@
         document.getElementById('val-inc').innerText = fmtCurrency(mInc);
         document.getElementById('val-exp').innerText = fmtCurrency(mExp);
         document.getElementById('val-pending').innerText = fmtCurrency(pendingFixed);
+        document.getElementById('val-card-due').innerText = fmtCurrency(cardDue);
         document.getElementById('val-bal').innerText = fmtCurrency(safeBalance);
-        document.getElementById('val-bal-sub').innerText = `현금 ${fmtCurrency(cashTotal)} / 고정비 남음 ${fmtCurrency(pendingFixed)}`;
+        document.getElementById('val-bal-sub').innerText = `현금 ${fmtCurrency(cashTotal)} / 고정비 남음 ${fmtCurrency(pendingFixed)} / 카드결제예정 ${fmtCurrency(cardDue)}`;
 
         // 3. Calendar
         renderCalendar(monthStr);
