@@ -1200,6 +1200,35 @@
 ### Remaining Issues
 - `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 검증이 한 번 더 필요
 
+## 2026-03-15 23:12 (Asia/Seoul)
+
+### User Requests
+- Notion Step 페이지들에 깨진 한글이 보이지 않도록 UTF-8 기준으로 다시 정리
+
+### Changes Applied
+- 사용자 제공 Notion API 토큰으로 직접 페이지 접근 확인
+- 기존 Step 1~5 페이지 제목과 본문을 `docs/BUILD_STORY_STEPS.md` 기준으로 다시 반영
+- Step 1, Step 3, Step 5 본문 일부를 다시 조회해 한글이 정상적으로 저장되었는지 확인
+
+### Verification
+- Notion API로 각 Step 페이지 제목 확인
+- Notion API로 Step 1 / Step 3 / Step 5 상단 블록 내용 확인
+  - `추천 제목`
+  - `검색 유입 키워드`
+  - `글 구조`
+  - 한글 본문 문자열 정상 반환 확인
+
+### Results
+- Notion 하위 Step 페이지들이 UTF-8 한글 기준으로 다시 정리됨
+- 기존 `??`, 깨진 문자, 인코딩 문제로 보이던 본문을 정상 한글 텍스트로 복원
+
+### Git
+- Changed files:
+  - `docs/SESSION_LOG.md`
+
+### Remaining Issues
+- `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 검증이 한 번 더 필요
+
 ## 2026-03-15 22:58 (Asia/Seoul)
 
 ### User Requests
