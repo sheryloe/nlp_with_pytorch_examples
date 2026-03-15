@@ -1171,6 +1171,44 @@
 ### Remaining Issues
 - `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 확인 필요
 
+## 2026-03-15 23:03 (Asia/Seoul)
+
+### User Requests
+- GitHub Pages가 여전히 박스 나열형이라 정렬감이 없다고 피드백
+- 한글 문서처럼 글을 길게 써내려가는 방식이 아니라, 네이버 같은 포털형 화면 구성으로 다시 만들어달라고 요청
+
+### Changes Applied
+- GitHub Pages 랜딩 구조를 포털형 레이아웃으로 재설계
+  - `docs/index.html`
+  - 상단 유틸리티 바, 검색 밴드형 서비스 요약, 메인 리드 패널, 우측 정보 보드, 기능 모듈 그리드, 대형 화면 섹션, 구조 보드로 재구성
+- GitHub Pages 스타일 전면 교체
+  - `docs/styles.css`
+  - 네이버식 포털 화면을 참고한 정렬 중심 그리드, 흰 배경 카드, 녹색 포인트, 섹션 간 위계가 드러나는 구조로 재작성
+  - 긴 문단보다 짧은 헤드라인/요약/모듈 카드 중심으로 압축
+
+### Verification
+- `docs/index.html`, `docs/styles.css`에서 `Notion`, `빌드 스토리`, `notion.so` 문자열 미검출 확인
+- 주요 레이아웃 포인트 확인
+  - `utility-bar`
+  - `search-band`
+  - `home-grid`
+  - `module-grid`
+  - `screen-layout`
+  - `stack-board`
+
+### Results
+- GitHub Pages가 문서형 소개에서 포털형 랜딩 구조로 재구성됨
+- 메인 화면, 기능 보드, 구조 보드가 각각 분리되어 정렬과 위계가 더 분명해짐
+
+### Git
+- Changed files:
+  - `docs/index.html`
+  - `docs/styles.css`
+  - `docs/SESSION_LOG.md`
+
+### Remaining Issues
+- `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 확인 필요
+
 ## 2026-03-15 22:51 (Asia/Seoul)
 
 ### User Requests
