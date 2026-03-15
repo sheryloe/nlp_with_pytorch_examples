@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Donggri Ledger | 개인 가계부 서비스와 코드 구조 소개</title>
+    <title>Donggri Ledger | 카드 결제예정과 투자 흐름까지 보는 개인 가계부 서비스</title>
     <meta
       name="description"
       content="Donggri Ledger는 Supabase, Vercel, GitHub 기반으로 운영하는 개인 가계부 서비스입니다. 카드 결제예정, 고정지출, 예산, 투자 포트폴리오, 백업과 복원을 한 흐름으로 관리합니다."
@@ -14,11 +14,11 @@
     >
     <meta name="robots" content="index, follow, max-image-preview:large">
     <meta name="googlebot" content="index, follow, max-image-preview:large">
-    <meta name="theme-color" content="#155ec5">
+    <meta name="theme-color" content="#0f1728">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="ko_KR">
     <meta property="og:site_name" content="Donggri Ledger">
-    <meta property="og:title" content="Donggri Ledger | 개인 가계부 서비스와 코드 구조 소개">
+    <meta property="og:title" content="Donggri Ledger | 카드 결제예정과 투자 흐름까지 보는 개인 가계부 서비스">
     <meta
       property="og:description"
       content="회원가입, 카드 결제예정, 고정지출, 예산, 투자 포트폴리오, 백업과 복원을 지원하는 개인 가계부 서비스입니다."
@@ -45,7 +45,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&family=Outfit:wght@500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&family=Sora:wght@500;600;700;800&display=swap"
       rel="stylesheet"
     >
     <link rel="stylesheet" href="styles.css">
@@ -100,10 +100,10 @@
               },
               {
                 "@type": "Question",
-                "name": "어떤 사람이 이 서비스를 쓰기 좋나요?",
+                "name": "왜 카드 결제예정 기능이 중요한가요?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "생활비, 카드 결제일, 투자 자산을 한 화면에서 같이 관리하고 싶은 개인 사용자에게 맞는 구조입니다."
+                  "text": "카드를 쓴 날과 실제 돈이 빠져나가는 날이 다르기 때문에, 생활비 흐름을 맞추려면 결제예정 금액을 따로 관리해야 합니다."
                 }
               }
             ]
@@ -119,11 +119,11 @@
           <span class="brand-mark">DG</span>
           <span class="brand-text">
             <strong>Donggri Ledger</strong>
-            <span>Personal finance service and codebase</span>
+            <span>Personal finance service</span>
           </span>
         </a>
         <nav class="topnav" aria-label="페이지 이동">
-          <a href="#features">기능</a>
+          <a href="#overview">개요</a>
           <a href="#screens">화면</a>
           <a href="#architecture">구조</a>
           <a href="#roadmap">로드맵</a>
@@ -133,96 +133,111 @@
       </header>
 
       <main id="top">
-        <section class="hero">
-          <div class="hero-copy">
-            <p class="eyebrow">Personal finance workspace</p>
-            <h1>카드 결제예정부터 투자 포트폴리오까지<br>한 흐름으로 보는 개인 가계부 서비스</h1>
-            <p class="hero-body">
-              Donggri Ledger는 수입과 지출만 기록하는 가계부가 아니라, 카드 결제예정, 고정지출, 예산,
-              투자 자산, 백업과 복원까지 한 서비스 안에서 이어서 관리할 수 있도록 만든 개인 재무 도구입니다.
-            </p>
-            <div class="hero-actions">
-              <a class="button primary" href="https://github.com/sheryloe/donggri_gagyeobu">GitHub 저장소 보기</a>
-              <a class="button secondary" href="#architecture">서비스 구조 보기</a>
+        <section class="hero-shell" id="overview">
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <p class="eyebrow">Personal finance workspace</p>
+              <h1>생활비, 카드 결제일, 투자 자산까지<br>한 화면의 흐름으로 정리하는<br>개인 가계부 서비스</h1>
+              <p class="hero-body">
+                카드 결제예정, 고정지출, 예산, 투자 포트폴리오를
+                한 서비스 흐름 안에서 관리하도록 정리한 개인 가계부입니다.
+              </p>
+              <div class="hero-actions">
+                <a class="button primary" href="https://github.com/sheryloe/donggri_gagyeobu">GitHub 저장소 보기</a>
+                <a class="button secondary" href="#screens">실제 화면 보기</a>
+              </div>
             </div>
-            <ul class="hero-meta">
-              <li>아이디 로그인 + 보안질문 복구</li>
-              <li>카드 결제예정 자동 계산</li>
-              <li>고정지출 / 예산 / 투자 관리</li>
-              <li>Supabase + Vercel 서비스형 운영</li>
-            </ul>
+
+            <aside class="hero-panel">
+              <div class="status-card">
+                <span class="status-label">Service snapshot</span>
+                <h2>운영 구조는 단순하고, 사용자 흐름은 촘촘하게</h2>
+                <p>Vercel, Supabase, GitHub로 역할을 나눠 서비스와 저장소를 분리 운영합니다.</p>
+              </div>
+              <ul class="status-list">
+                <li>
+                  <strong>인증</strong>
+                  <span>아이디 로그인, 보안질문 복구</span>
+                </li>
+                <li>
+                  <strong>재무 흐름</strong>
+                  <span>카드 결제예정, 고정지출, 예산 관리</span>
+                </li>
+                <li>
+                  <strong>투자</strong>
+                  <span>주식, 코인, ETF, 펀드 포트폴리오 추적</span>
+                </li>
+                <li>
+                  <strong>운영</strong>
+                  <span>JSON 백업과 복원, Git 기반 버전 관리</span>
+                </li>
+              </ul>
+            </aside>
           </div>
 
-          <figure class="hero-shot">
+          <figure class="hero-stage">
             <img
               src="assets/screenshots/donggri-ledger-dashboard.png"
-              alt="Donggri Ledger 대시보드 전체 화면"
+              alt="Donggri Ledger 메인 대시보드 전체 화면"
               loading="eager"
             >
             <figcaption>
-              월별 요약, 자산 현황, 거래 입력, 카드 결제예정이 한 화면에서 이어지는 메인 대시보드입니다.
+              <strong>메인 대시보드</strong>
+              <span>월별 요약, 자산 상태, 카드 결제예정, 거래 입력, 최근 거래를 한 자리에서 이어서 확인합니다.</span>
             </figcaption>
           </figure>
         </section>
 
-        <section class="summary-strip">
-          <article>
+        <section class="signal-grid">
+          <article class="signal-card">
             <span>01</span>
-            <h2>서비스형 가계부</h2>
-            <p>집 PC를 켜두는 로컬 서버가 아니라, 외부 접속 가능한 웹 서비스 구조로 운영합니다.</p>
+            <h2>서비스형 운영</h2>
+            <p>집 PC를 켜두는 로컬 서버 대신, 외부 접속 가능한 서비스 구조로 전환한 상태입니다.</p>
           </article>
-          <article>
+          <article class="signal-card">
             <span>02</span>
-            <h2>실사용 흐름 중심</h2>
-            <p>카드 쓴 날과 실제 돈 빠지는 날의 차이까지 반영해서 생활비 흐름을 맞춥니다.</p>
+            <h2>실사용 우선 설계</h2>
+            <p>카드 쓴 날과 실제 결제일이 다른 생활비 흐름을 기준으로 데이터 모델을 잡았습니다.</p>
           </article>
-          <article>
+          <article class="signal-card">
             <span>03</span>
             <h2>코드와 문서 분리</h2>
-            <p>서비스는 Vercel에서, 코드와 프로젝트 문서는 GitHub에서 분리 운영합니다.</p>
+            <p>서비스 화면은 Vercel, 프로젝트 소개와 저장소 이력은 GitHub 중심으로 운영합니다.</p>
           </article>
         </section>
 
-        <section class="section-card" id="features">
+        <section class="section-card section-dark">
           <div class="section-heading">
-            <p class="eyebrow">Current features</p>
-            <h2>현재 제공하는 핵심 기능</h2>
+            <p class="eyebrow">Core feature set</p>
+            <h2>가계부 기능을 서비스 단위로 다시 묶었습니다</h2>
             <p class="section-body">
-              이 페이지는 제품 소개와 코드 구조 설명에 집중합니다. 현재 서비스에서 바로 확인할 수 있는 기능만 정리했습니다.
+              입력 기능보다 실제 사용 흐름이 먼저 보이도록 다시 묶었습니다.
             </p>
           </div>
-          <div class="feature-grid">
-            <article class="feature-card">
+          <div class="feature-rows">
+            <article class="feature-row">
               <strong>계정 접근</strong>
-              <p>아이디와 비밀번호 로그인, 보안질문 3개 기반 비밀번호 재설정, 50명 가입 제한을 지원합니다.</p>
+              <p>아이디 로그인, 보안질문 3개 기반 비밀번호 재설정, 50명 가입 제한.</p>
             </article>
-            <article class="feature-card">
-              <strong>거래 관리</strong>
-              <p>수입, 지출, 투자 거래를 입력하고 월별 흐름과 최근 내역을 한 번에 볼 수 있습니다.</p>
+            <article class="feature-row">
+              <strong>거래와 자산</strong>
+              <p>수입, 지출, 투자 거래를 입력하고 은행, 현금, 카드, 투자계좌를 분리 관리.</p>
             </article>
-            <article class="feature-card">
-              <strong>자산 분리</strong>
-              <p>은행, 현금, 카드, 투자계좌를 분리해 실제 재무 상태를 더 정확하게 관리합니다.</p>
-            </article>
-            <article class="feature-card">
+            <article class="feature-row">
               <strong>카드 결제예정</strong>
-              <p>카드 자산별 결제일과 결제통장을 연결해 이번달 카드 결제예정 금액을 계산합니다.</p>
+              <p>카드 자산별 결제일과 결제통장을 연결해 이번달 결제예정 금액을 계산.</p>
             </article>
-            <article class="feature-card">
+            <article class="feature-row">
               <strong>고정지출과 예산</strong>
-              <p>고정지출 등록과 카테고리별 예산 설정으로 생활비 초과 여부를 바로 확인할 수 있습니다.</p>
+              <p>고정지출 등록과 카테고리별 예산 설정으로 생활비 흐름을 월 단위로 확인.</p>
             </article>
-            <article class="feature-card">
+            <article class="feature-row">
               <strong>투자 포트폴리오</strong>
-              <p>주식, 코인, ETF, 펀드를 분리 관리하고 평가금과 수익률을 한 흐름으로 추적합니다.</p>
+              <p>주식, 코인, ETF, 펀드를 분리 관리하고 평가금과 수익률을 추적.</p>
             </article>
-            <article class="feature-card">
-              <strong>백업과 복원</strong>
-              <p>JSON 내보내기와 복원 기능으로 데이터 이전과 안전한 보관을 지원합니다.</p>
-            </article>
-            <article class="feature-card">
-              <strong>검색과 점검</strong>
-              <p>거래 검색, 리포트, 삭제 전 연결 데이터 검사 등 운영 마감 UX도 같이 정리되어 있습니다.</p>
+            <article class="feature-row">
+              <strong>데이터 안전장치</strong>
+              <p>JSON 내보내기와 복원, 삭제 전 연결 데이터 검사, 운영 로그 관리.</p>
             </article>
           </div>
         </section>
@@ -230,81 +245,87 @@
         <section class="section-card" id="screens">
           <div class="section-heading">
             <p class="eyebrow">Product screens</p>
-            <h2>서비스 화면을 크게 보는 섹션</h2>
+            <h2>실제 화면을 크게 보여주는 섹션</h2>
             <p class="section-body">
-              작은 카드 캡처 대신, 현재 서비스의 핵심 화면을 전체 흐름이 보이도록 크게 배치했습니다.
+              썸네일 대신 메인 흐름이 보이는 전체 화면 중심으로 배치했습니다.
             </p>
           </div>
 
-          <figure class="screen-panel">
-            <img
-              src="assets/screenshots/donggri-ledger-dashboard.png"
-              alt="Donggri Ledger 메인 대시보드 전체 화면"
-              loading="lazy"
-            >
-            <figcaption>
-              <strong>메인 대시보드</strong>
-              <span>자산 요약, 카드 결제예정, 월별 합계, 거래 입력, 최근 거래 목록이 한 화면에 이어집니다.</span>
-            </figcaption>
-          </figure>
+          <div class="shot-stack">
+            <figure class="shot-panel">
+              <img
+                src="assets/screenshots/donggri-ledger-dashboard.png"
+                alt="Donggri Ledger 대시보드 전체 캡처"
+                loading="lazy"
+              >
+              <figcaption>
+                <strong>Dashboard</strong>
+                <span>자산 현황, 월별 요약, 거래 입력과 최근 내역까지 이어지는 메인 화면.</span>
+              </figcaption>
+            </figure>
 
-          <figure class="screen-panel">
-            <img
-              src="assets/screenshots/donggri-ledger-investments.png"
-              alt="Donggri Ledger 투자 화면 전체 캡처"
-              loading="lazy"
-            >
-            <figcaption>
-              <strong>투자 포트폴리오 화면</strong>
-              <span>종목 추가, 평가금, 수익률, 실시간 가격 새로고침 흐름을 별도 탭에서 정리합니다.</span>
-            </figcaption>
-          </figure>
+            <figure class="shot-panel">
+              <img
+                src="assets/screenshots/donggri-ledger-investments.png"
+                alt="Donggri Ledger 투자 포트폴리오 전체 캡처"
+                loading="lazy"
+              >
+              <figcaption>
+                <strong>Investments</strong>
+                <span>종목 등록, 평가금, 수익률, 실시간 가격 새로고침 흐름을 묶은 투자 화면.</span>
+              </figcaption>
+            </figure>
+          </div>
         </section>
 
         <section class="section-card" id="architecture">
           <div class="section-heading">
             <p class="eyebrow">Architecture</p>
-            <h2>서비스 구조와 코드 구성</h2>
+            <h2>서비스 구조와 코드 구조를 분리해서 설명합니다</h2>
             <p class="section-body">
-              운영은 서비스 기준으로, 코드는 책임 기준으로 나눴습니다. GitHub Pages는 소개용 랜딩, 실제 서비스는 Vercel 배포를 전제로 잡고 있습니다.
+              운영 레이어와 저장소 레이어를 섞지 않고 역할만 짧게 나눴습니다.
             </p>
           </div>
 
-          <div class="architecture-grid">
-            <article class="stack-card">
-              <strong>Frontend</strong>
-              <p>정적 웹 앱을 Vercel에 배포합니다. 로그인, 거래 입력, 자산 관리, 투자 화면이 이 레이어에 있습니다.</p>
+          <div class="architecture-split">
+            <article class="architecture-card">
+              <span class="section-kicker">Service stack</span>
+              <ul class="stack-list">
+                <li>
+                  <strong>Frontend</strong>
+                  <p>정적 웹 앱을 Vercel에 배포하고, 로그인 이후 UI와 상태 관리를 브라우저에서 처리합니다.</p>
+                </li>
+                <li>
+                  <strong>Auth / Database</strong>
+                  <p>Supabase Auth와 Postgres, RLS로 사용자별 데이터 분리와 접근 제어를 담당합니다.</p>
+                </li>
+                <li>
+                  <strong>Automation</strong>
+                  <p>Edge Functions로 회원가입, 보안질문 복구, 투자 가격 새로고침 같은 서버 보조 로직을 처리합니다.</p>
+                </li>
+              </ul>
             </article>
-            <article class="stack-card">
-              <strong>Auth / DB</strong>
-              <p>Supabase Auth와 Postgres, RLS를 이용해 사용자별 데이터 분리와 접근 제어를 처리합니다.</p>
-            </article>
-            <article class="stack-card">
-              <strong>Automation</strong>
-              <p>Supabase Edge Functions로 회원가입, 보안질문 복구, 투자 가격 새로고침 같은 서버 보조 로직을 담당합니다.</p>
-            </article>
-            <article class="stack-card">
-              <strong>Repository</strong>
-              <p>GitHub에서 코드 이력, 문서, 세션 로그를 관리하고 GitHub Pages 정적 랜딩도 같이 유지합니다.</p>
-            </article>
-          </div>
 
-          <div class="code-layout">
-            <article class="code-card">
-              <strong>`web/`</strong>
-              <p>실제 UI, 상태 관리, 브라우저 동작 로직이 들어 있습니다.</p>
-            </article>
-            <article class="code-card">
-              <strong>`supabase/`</strong>
-              <p>스키마, RLS, Edge Functions와 같은 서비스 백엔드 정의가 들어 있습니다.</p>
-            </article>
-            <article class="code-card">
-              <strong>`docs/`</strong>
-              <p>GitHub Pages 랜딩, SEO 리소스, 스크린샷, 세션 로그가 들어 있습니다.</p>
-            </article>
-            <article class="code-card">
-              <strong>`scripts/`</strong>
-              <p>정적 웹 빌드와 배포용 보조 스크립트를 관리합니다.</p>
+            <article class="architecture-card">
+              <span class="section-kicker">Repository layout</span>
+              <div class="repo-grid">
+                <div class="repo-card">
+                  <strong>`web/`</strong>
+                  <p>실제 UI, 화면 상태, 사용자 상호작용 로직.</p>
+                </div>
+                <div class="repo-card">
+                  <strong>`supabase/`</strong>
+                  <p>스키마, RLS, Edge Functions 정의.</p>
+                </div>
+                <div class="repo-card">
+                  <strong>`docs/`</strong>
+                  <p>GitHub Pages 랜딩, SEO 리소스, 스크린샷, 세션 로그.</p>
+                </div>
+                <div class="repo-card">
+                  <strong>`scripts/`</strong>
+                  <p>정적 웹 빌드와 배포용 보조 스크립트.</p>
+                </div>
+              </div>
             </article>
           </div>
         </section>
@@ -312,40 +333,40 @@
         <section class="section-card" id="roadmap">
           <div class="section-heading">
             <p class="eyebrow">Recommended roadmap</p>
-            <h2>다음으로 붙이면 좋은 기능</h2>
+            <h2>다음 단계는 기능 추가보다 흐름 강화에 가깝습니다</h2>
             <p class="section-body">
-              지금 구조를 무너지지 않게 유지하면서, 실제 사용성과 운영 효율을 같이 올릴 수 있는 기능을 우선순위로 정리했습니다.
+              현재 구조를 유지하면서 사용성과 운영성을 같이 올릴 기능만 추렸습니다.
             </p>
           </div>
           <div class="roadmap-grid">
             <article class="roadmap-card">
               <h3>Priority 1</h3>
-              <p>반복 수입과 반복 지출 자동 생성, 계좌 간 이체 거래를 붙이면 월간 입력 부담이 크게 줄어듭니다.</p>
+              <p>반복 수입과 반복 지출 자동 생성, 계좌 간 이체 거래 추가.</p>
             </article>
             <article class="roadmap-card">
               <h3>Priority 2</h3>
-              <p>예산 초과, 카드 결제일, 고정지출 알림 센터를 만들면 실사용 감각이 더 올라갑니다.</p>
+              <p>예산 초과, 카드 결제일, 고정지출 알림 센터 구축.</p>
             </article>
             <article class="roadmap-card">
               <h3>Priority 3</h3>
-              <p>CSV / Excel 가져오기와 PDF 리포트 내보내기로 데이터 이동성과 공유성을 강화할 수 있습니다.</p>
+              <p>CSV / Excel 가져오기와 PDF 리포트 내보내기.</p>
             </article>
             <article class="roadmap-card">
               <h3>Priority 4</h3>
-              <p>투자 수익률 추이 차트와 가격 갱신 이력을 붙이면 포트폴리오 탭의 분석력이 더 좋아집니다.</p>
+              <p>투자 수익률 추이 차트와 가격 갱신 이력 기록.</p>
             </article>
             <article class="roadmap-card">
               <h3>Priority 5</h3>
-              <p>가입 현황, 함수 상태, 오류 로그를 보는 운영 대시보드를 만들면 서비스형 운영이 더 편해집니다.</p>
+              <p>가입 현황, 함수 상태, 오류 로그를 보는 운영 대시보드.</p>
             </article>
             <article class="roadmap-card">
               <h3>Future option</h3>
-              <p>월마감 스냅샷, 목표 저축, 가족 공유 계정 같은 기능은 현재 구조가 더 안정화된 뒤 붙이는 편이 좋습니다.</p>
+              <p>월마감 스냅샷, 목표 저축, 가족 공유 계정 같은 확장 기능.</p>
             </article>
           </div>
         </section>
 
-        <section class="section-card" id="faq">
+        <section class="section-card section-faq" id="faq">
           <div class="section-heading">
             <p class="eyebrow">FAQ</p>
             <h2>자주 묻는 질문</h2>

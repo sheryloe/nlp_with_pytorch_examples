@@ -1171,6 +1171,36 @@
 ### Remaining Issues
 - `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 확인 필요
 
+## 2026-03-15 22:51 (Asia/Seoul)
+
+### User Requests
+- GitHub Pages UI가 너무 가볍고 문서처럼 보여서, 레이아웃 중심의 더 성숙한 서비스 랜딩으로 다시 만들어달라고 요청
+
+### Changes Applied
+- GitHub Pages 랜딩 레이아웃 재설계
+  - `docs/index.html`
+  - 히어로/상태 패널/신호 카드/다크 기능 섹션/대형 스크린샷 섹션/구조 섹션 중심으로 재구성
+  - 문장 위주 설명을 줄이고 카드/블록 중심 레이아웃으로 정리
+- GitHub Pages 스타일 전면 교체
+  - `docs/styles.css`
+  - 다크 톤 상단 바, 큰 스크린샷 스테이지, 절제된 카드 스타일, 2단/3단 그리드 중심 구성으로 재작성
+
+### Verification
+- `docs/index.html`, `docs/styles.css`에서 `Notion`, `빌드 스토리`, `notion.so` 문자열 미검출 확인
+
+### Results
+- GitHub Pages가 문서형 소개 페이지보다 제품 랜딩에 가까운 레이아웃으로 재구성됨
+- 작은 카드 나열 대신 전체 화면 스크린샷과 구조 카드 중심 배치로 변경됨
+
+### Git
+- Changed files:
+  - `docs/index.html`
+  - `docs/styles.css`
+  - `docs/SESSION_LOG.md`
+
+### Remaining Issues
+- `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 확인 필요
+
 ## 2026-03-15 22:36 (Asia/Seoul)
 
 ### User Requests
