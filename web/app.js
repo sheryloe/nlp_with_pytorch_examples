@@ -1995,7 +1995,7 @@ async function refreshFromApi() {
                     <td style="text-align:right; font-weight:700;">${fmtCurrency(t.amount)}</td>
                     <td style="text-align:center;">
                         <button type="button" onclick="startEditTransaction(${t.id})" style="border:1px solid #cbd5e1; background:white; border-radius:4px; cursor:pointer;">??</button>
-                        <button type="button" onclick="deleteTransaction(${t.id})" style="border:1px solid #ef4444; color:#ef4444; background:white; border-radius:4px; cursor:pointer; margin-left:4px;">???</button>
+                        <button type="button" aria-label="거래 삭제" title="삭제" onclick="deleteTransaction(${t.id})" style="border:1px solid #ef4444; color:#ef4444; background:white; border-radius:4px; cursor:pointer; margin-left:4px;">🗑</button>
                     </td>
                 </tr>
             `;
@@ -2038,7 +2038,7 @@ async function refreshFromApi() {
                     <td>${cardConfigText}</td>
                     <td style="text-align:right;">${fmtCurrency(a.balance)}</td>
                     <td style="text-align:center;">
-                        <button type="button" onclick="deleteAsset(${a.id})" style="border:1px solid #ef4444; color:#ef4444; background:white; border-radius:4px;">???</button>
+                        <button type="button" aria-label="자산 삭제" title="삭제" onclick="deleteAsset(${a.id})" style="border:1px solid #ef4444; color:#ef4444; background:white; border-radius:4px;">🗑</button>
                     </td>
                 </tr>
             `;
@@ -2169,7 +2169,7 @@ async function refreshFromApi() {
                         <td style="text-align:right;"><span class="${roiClass}">${roi.toFixed(2)}%</span></td>
                         <td>${formatDateTime(i.lastUpdated)}</td>
                         <td style="text-align:center;">
-                            <button type="button" onclick="deleteInvestment(${i.id})" style="border:1px solid #ef4444; color:#ef4444; background:white; border-radius:6px; cursor:pointer;">???</button>
+                            <button type="button" aria-label="투자 항목 삭제" title="삭제" onclick="deleteInvestment(${i.id})" style="border:1px solid #ef4444; color:#ef4444; background:white; border-radius:6px; cursor:pointer;">🗑</button>
                         </td>
                     </tr>
                 `;
