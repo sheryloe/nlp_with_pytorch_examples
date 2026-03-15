@@ -1171,6 +1171,36 @@
 ### Remaining Issues
 - `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 확인 필요
 
+## 2026-03-15 23:18 (Asia/Seoul)
+
+### User Requests
+- GitHub Pages에서 강조해야 할 포인트가 다 같은 크기와 무게로 보여서, 핵심 요소가 눈에 띄게 위계를 더 주도록 수정 요청
+
+### Changes Applied
+- 강조 타이포 추가
+  - `docs/index.html`
+  - 검색 밴드 핵심 키워드와 메인 헤드라인 일부 단어에 강조 색상 span 추가
+- 강조 카드 추가
+  - `docs/index.html`
+  - 메트릭 카드 2개와 대표 기능 카드 3개를 강조형 클래스로 분리
+- 강조 스타일 추가
+  - `docs/styles.css`
+  - `.tone-accent`, `.metric-card.highlight`, `.module-card.featured` 추가
+  - 핵심 키워드와 대표 카드가 기본 카드보다 한 단계 더 먼저 보이도록 배경/테두리/텍스트 색상 차등 부여
+
+### Results
+- 검색 밴드, 메인 헤드라인, 메트릭 카드, 주요 기능 카드에 시선이 먼저 가도록 강조 위계가 보강됨
+- 같은 크기/같은 무게로 보이던 포털형 페이지의 시각적 우선순위가 더 분명해짐
+
+### Git
+- Changed files:
+  - `docs/index.html`
+  - `docs/styles.css`
+  - `docs/SESSION_LOG.md`
+
+### Remaining Issues
+- `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 확인 필요
+
 ## 2026-03-15 23:12 (Asia/Seoul)
 
 ### User Requests

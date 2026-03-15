@@ -151,6 +151,14 @@ a {
   color: var(--muted);
 }
 
+.tone-accent {
+  color: var(--accent-deep);
+}
+
+.tone-dark {
+  color: #101828;
+}
+
 .masthead-actions {
   display: flex;
   flex-wrap: wrap;
@@ -322,6 +330,15 @@ a {
   font: 800 0.94rem/1.32 "Manrope", sans-serif;
 }
 
+.metric-card.highlight {
+  border-color: #cfe9d8;
+  background: linear-gradient(180deg, #f5fdf8 0%, #ffffff 100%);
+}
+
+.metric-card.highlight strong {
+  color: var(--accent-deep);
+}
+
 .side-board {
   display: grid;
   gap: 14px;
@@ -396,10 +413,19 @@ a {
   border-radius: 18px;
 }
 
+.module-card.featured {
+  border-color: #cfe9d8;
+  background: linear-gradient(180deg, #f7fcf8 0%, #ffffff 100%);
+}
+
 .module-card strong {
   display: block;
   margin-bottom: 8px;
   font-size: 0.94rem;
+}
+
+.module-card.featured strong {
+  color: var(--accent-deep);
 }
 
 .module-card p {
