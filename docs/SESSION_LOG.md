@@ -1936,3 +1936,26 @@
 ### Remaining Issues
 - Notion MCP 인증 복구 필요
 - 인증 복구 후 Step 6 페이지 UTF-8 한글 원고 재적용 필요
+
+## 2026-03-16 01:08 (Asia/Seoul)
+
+### User Requests
+- MCP가 아니라도 API 토큰과 페이지 주소로 직접 처리할 수 있으니 Step 6 Notion 페이지를 다시 고쳐 달라고 요청
+
+### Changes Applied
+- Notion MCP 대신 직접 Notion REST API 호출 방식으로 우회
+  - 사용자 제공 API 토큰 사용
+  - 대상 페이지: `https://www.notion.so/Step-6-ETF-32461b8ed53c81be8500c7c002c708e6`
+- 로컬 UTF-8 원고를 직접 읽어서 페이지 제목과 본문 재작성
+  - 원고: `docs/BUILD_STORY_STEP6.md`
+  - 기존 깨진 블록 삭제 후 새 블록 31개 재업로드
+- 재적용 후 제목과 상단 블록 미리보기 확인
+  - 제목: `Step 6. 해외 주식과 ETF까지 감당하는 멀티통화 투자 구조로 개편하기`
+  - 상단 블록: `메인 키워드`, `해외 주식 가계부 만들기`, `해외 ETF 수익률 계산` 등 한글 정상 확인
+
+### Results
+- Step 6 Notion 페이지를 UTF-8 한글 원고 기준으로 다시 덮어써서 깨진 제목/본문을 정상 상태로 복구함
+- MCP 인증이 막힌 상황에서도 직접 API 방식으로 작업 가능하다는 우회 경로를 확인함
+
+### Remaining Issues
+- 같은 유형의 Notion 작업이 반복된다면 MCP 인증 상태를 정리하는 것이 장기적으로는 더 편함
