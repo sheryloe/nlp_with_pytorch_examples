@@ -1200,6 +1200,38 @@
 ### Remaining Issues
 - `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 검증이 한 번 더 필요
 
+## 2026-03-15 23:30 (Asia/Seoul)
+
+### User Requests
+- GitHub Wiki 기능이 실제로 열렸으니, 저장소 안 `wiki/` 초안을 실제 GitHub Wiki 원격에 반영
+
+### Changes Applied
+- GitHub Wiki 원격 확인
+  - `https://github.com/sheryloe/donggri_gagyeobu.wiki.git`
+  - 기존에는 `repository not found`였으나 이번에는 접근 가능 상태 확인
+- 실제 Wiki 원격 반영
+  - 저장소 `wiki/` 문서를 위키 저장소 루트 구조에 맞게 변환
+  - 내부 링크는 위키 전용 링크 형태로 정리
+  - 저장소 상대경로 문서는 GitHub 본문 URL로 치환
+  - 실제 위키 저장소에 `Home`, `Product-Overview`, `Feature-Guide`, `Architecture`, `Operations-and-Deployment`, `Roadmap`, `_Sidebar`, `_Footer` push
+- `README.md`
+  - Quick Links의 `Wiki`를 실제 GitHub Wiki 주소로 변경
+  - 저장소 안 원고 위치는 `Wiki Source`로 별도 유지
+
+### Results
+- GitHub 저장소의 실제 Wiki 탭에서 Donggri Ledger 위키 문서를 바로 볼 수 있게 됨
+- 저장소 내부 `wiki/` 원고와 실제 Wiki가 연결된 상태로 정리됨
+
+### Git
+- Changed files:
+  - `README.md`
+  - `docs/SESSION_LOG.md`
+- Wiki remote commit:
+  - `a738bf0` (`Add Donggri Ledger wiki pages`)
+
+### Remaining Issues
+- `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 검증이 한 번 더 필요
+
 ## 2026-03-15 23:25 (Asia/Seoul)
 
 ### User Requests
