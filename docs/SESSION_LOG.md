@@ -901,3 +901,41 @@
 
 ### Remaining Issues
 - GitHub push 후 Vercel에서 최신 auth 루트가 반영됐는지 확인 필요
+
+## 2026-03-15 20:37 (Asia/Seoul)
+
+### User Requests
+- 로그인 / 회원가입 / 비밀번호 찾기가 같은 화면 모드 전환처럼 보이지 않게 수정
+- 로그인 화면에서 버튼을 눌렀을 때 회원가입 화면으로 넘어가는 view pipeline 형태로 재구성
+- 변경 후 commit / push 진행
+
+### Changes Applied
+- auth flow를 screen 단위로 분리
+  - `web/index.html`
+  - 로그인 / 회원가입 / 비밀번호 찾기 각 화면을 별도 `auth-panel` 섹션으로 분리
+  - 기본 루트는 로그인 화면만 노출
+  - 회원가입 가능 인원 안내는 회원가입 화면에만 노출
+- auth mode 토글 로직 단순화
+  - `web/app.js`
+  - 공유 헤더 메타 전환 제거
+  - `data-auth-screen` 기준으로 화면 단위 숨김/표시 처리
+
+### Verification
+- `node --check web/app.js` 통과
+- `node scripts/build-web.mjs` 통과
+
+### Results
+- 로그인 화면에서 회원가입 버튼을 누르면 별도 회원가입 화면으로 넘어가는 흐름으로 정리됨
+- 하나의 카드 안에서 탭/모드만 바뀌는 인상이 줄고, 서비스형 auth 진입 흐름에 더 가깝게 정리됨
+
+### Git
+- Feature commit:
+  - `c82350fe7ee308b1e7310f70777f8832895204a4`
+  - `feat: split auth into separate login and signup screens`
+- Changed files:
+  - `web/index.html`
+  - `web/app.js`
+  - `docs/SESSION_LOG.md`
+
+### Remaining Issues
+- GitHub push 후 Vercel에서 최신 auth flow가 반영됐는지 확인 필요
