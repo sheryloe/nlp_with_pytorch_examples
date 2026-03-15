@@ -1918,3 +1918,21 @@
 ### Remaining Issues
 - Notion MCP 인증 복구 필요
 - 인증 복구 후 Step 6 페이지를 로컬 원고 기준으로 다시 덮어써야 함
+
+## 2026-03-16 00:59 (Asia/Seoul)
+
+### User Requests
+- Notion `Step 6` 한글 깨짐 수정을 다시 한 번 더 재시도 요청
+
+### Changes Applied
+- `Step 6` Notion 페이지 재접근 시도
+  - `https://www.notion.so/Step-6-ETF-32461b8ed53c81be8500c7c002c708e6`
+- 현재 세션 기준 Notion MCP 연결 상태 재확인
+
+### Results
+- 이번 재시도도 `notion-fetch` 단계에서 동일하게 `Auth required`로 실패
+- 로컬 원고나 페이지 URL 문제가 아니라, 현재 세션의 Notion 인증이 살아 있지 않은 상태임을 다시 확인
+
+### Remaining Issues
+- Notion MCP 인증 복구 필요
+- 인증 복구 후 Step 6 페이지 UTF-8 한글 원고 재적용 필요
