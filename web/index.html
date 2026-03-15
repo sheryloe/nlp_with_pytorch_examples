@@ -613,62 +613,170 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 24px;
+            padding: 28px;
         }
 
-        .auth-card {
-            width: min(560px, 100%);
+        .auth-layout {
+            width: min(1040px, 100%);
+            display: grid;
+            grid-template-columns: minmax(290px, 380px) minmax(340px, 520px);
+            gap: 22px;
+            align-items: stretch;
+        }
+
+        .auth-brand,
+        .auth-panel {
             background: rgba(255, 254, 248, 0.96);
             border: 2px solid #1f2a44;
-            border-radius: 26px;
+            border-radius: 28px;
             box-shadow: 0 18px 40px rgba(31, 42, 68, 0.16);
-            padding: 28px;
             backdrop-filter: blur(12px);
+        }
+
+        .auth-brand {
+            padding: 28px;
+            background:
+                linear-gradient(170deg, rgba(23, 116, 209, 0.16), rgba(255, 255, 255, 0.6)),
+                rgba(255, 254, 248, 0.98);
+            display: grid;
+            gap: 18px;
+            align-content: space-between;
+        }
+
+        .auth-brand-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: fit-content;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-size: 0.78rem;
+            font-weight: 900;
+            border: 1px solid #93c5fd;
         }
 
         .auth-title {
             margin: 0;
-            font-size: 1.9rem;
+            font-size: 2.15rem;
+            line-height: 1.05;
             font-weight: 900;
-            color: var(--primary);
+            color: #0f172a;
+            letter-spacing: -0.03em;
         }
 
         .auth-subtitle {
-            margin: 10px 0 0;
-            color: var(--text-sub);
+            margin: 0;
+            color: #334155;
+            line-height: 1.65;
+            font-size: 0.96rem;
+        }
+
+        .auth-feature-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .auth-feature-item {
+            padding: 14px 16px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.72);
+            border: 1px solid #cbd5e1;
+        }
+
+        .auth-feature-item strong {
+            display: block;
+            font-size: 0.92rem;
+            color: #0f172a;
+        }
+
+        .auth-feature-item span {
+            display: block;
+            margin-top: 4px;
+            font-size: 0.83rem;
             line-height: 1.5;
-            font-size: 0.95rem;
+            color: #475569;
+        }
+
+        .auth-brand-footnote {
+            padding-top: 6px;
+            font-size: 0.8rem;
+            line-height: 1.55;
+            color: #475569;
+        }
+
+        .auth-panel {
+            padding: 28px;
+        }
+
+        .auth-panel-head {
+            margin-bottom: 18px;
+        }
+
+        .auth-panel-kicker {
+            display: inline-block;
+            font-size: 0.76rem;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #1774d1;
+        }
+
+        .auth-panel-title {
+            margin: 10px 0 0;
+            font-size: 1.85rem;
+            line-height: 1.1;
+            color: #0f172a;
+            letter-spacing: -0.03em;
+        }
+
+        .auth-panel-copy {
+            margin: 10px 0 0;
+            color: #64748b;
+            line-height: 1.6;
+            font-size: 0.92rem;
         }
 
         .auth-tabs {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 8px;
-            margin: 22px 0 12px;
+            margin: 0 0 14px;
         }
 
         .auth-tab {
-            border: 2px solid #1f2a44;
-            background: white;
-            color: #1f2a44;
+            border: 1px solid #cbd5e1;
+            background: #f8fafc;
+            color: #334155;
             border-radius: 12px;
             padding: 12px 10px;
             font-weight: 800;
             cursor: pointer;
-            box-shadow: 4px 4px 0 #1f2a44;
+            transition: 0.18s ease;
         }
 
         .auth-tab.active {
             background: var(--primary);
             color: white;
             border-color: #0a4b8f;
-            box-shadow: 4px 4px 0 #0a4b8f;
+            box-shadow: 0 10px 22px rgba(23, 116, 209, 0.22);
         }
 
         .auth-form {
             display: grid;
-            gap: 12px;
+            gap: 14px;
             margin-top: 14px;
+        }
+
+        .auth-form-intro {
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            color: #475569;
+            font-size: 0.84rem;
+            line-height: 1.55;
         }
 
         .auth-stack {
@@ -714,7 +822,7 @@
         }
 
         .auth-registration-note {
-            margin-top: 12px;
+            margin-top: 6px;
             padding: 12px 14px;
             border-radius: 14px;
             background: #eff6ff;
@@ -731,11 +839,31 @@
             line-height: 1.45;
         }
 
-        .auth-question-bank {
-            padding: 14px;
+        .auth-details {
+            border: 1px solid #cbd5e1;
             border-radius: 16px;
-            background: #fff7ed;
-            border: 1px solid #fdba74;
+            background: #fff;
+            overflow: hidden;
+        }
+
+        .auth-details > summary {
+            cursor: pointer;
+            list-style: none;
+            padding: 14px 16px;
+            font-size: 0.86rem;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .auth-details > summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .auth-question-bank {
+            padding: 0 16px 16px;
+            border-radius: 0;
+            background: transparent;
+            border: none;
             color: #7c2d12;
         }
 
@@ -756,10 +884,37 @@
         .auth-question-row {
             display: grid;
             gap: 10px;
-            padding: 12px;
-            border-radius: 14px;
-            background: #f8fafc;
-            border: 1px solid #cbd5e1;
+            padding: 16px;
+            border-radius: 18px;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #dbe3ee;
+        }
+
+        .auth-question-row-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .auth-step-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 34px;
+            height: 34px;
+            border-radius: 999px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-size: 0.78rem;
+            font-weight: 900;
+        }
+
+        .auth-step-title {
+            flex: 1;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #334155;
         }
 
         .auth-question-card {
@@ -789,6 +944,20 @@
             gap: 12px;
         }
 
+        @media (max-width: 920px) {
+            .auth-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .auth-brand {
+                order: 2;
+            }
+
+            .auth-panel {
+                order: 1;
+            }
+        }
+
         #app-shell[hidden],
         #auth-shell[hidden] {
             display: none !important;
@@ -798,102 +967,151 @@
 <body>
 
 <div id="auth-shell" class="auth-shell">
-    <div class="auth-card">
-        <h1 class="auth-title">동그리 가계부</h1>
-        <p class="auth-subtitle">아이디와 비밀번호로 바로 로그인하고, 비밀번호 찾기는 가입할 때 고른 보안질문 3개로 처리합니다. 메일 인증 없이 소규모 사용자용으로 단순하게 운영할 수 있게 바꿨습니다.</p>
+    <div class="auth-layout">
+        <aside class="auth-brand">
+            <div>
+                <span class="auth-brand-badge">Donggri Ledger</span>
+                <h1 class="auth-title">돈 흐름을<br>가볍게 관리하는 가계부</h1>
+                <p class="auth-subtitle">로그인 후 바로 자산, 거래, 카드 결제 예정, 투자 가격까지 이어서 관리할 수 있게 정리한 서비스형 화면입니다.</p>
+            </div>
 
-        <div class="auth-tabs">
-            <button type="button" class="auth-tab active" data-auth-mode="login">로그인</button>
-            <button type="button" class="auth-tab" data-auth-mode="signup">회원가입</button>
-            <button type="button" class="auth-tab" data-auth-mode="recovery">비밀번호 찾기</button>
-        </div>
+            <div class="auth-feature-list">
+                <div class="auth-feature-item">
+                    <strong>로그인 우선</strong>
+                    <span>첫 화면은 로그인에 집중하고, 회원가입과 비밀번호 찾기는 필요한 순간에만 열리게 구성했습니다.</span>
+                </div>
+                <div class="auth-feature-item">
+                    <strong>간단한 가입</strong>
+                    <span>아이디, 비밀번호, 보안질문 3개만 정하면 바로 시작할 수 있습니다.</span>
+                </div>
+                <div class="auth-feature-item">
+                    <strong>소규모 전용 운영</strong>
+                    <span>최대 50명 제한과 사용자별 데이터 분리를 같이 관리하는 구조입니다.</span>
+                </div>
+            </div>
 
-        <div id="auth-registration-note" class="auth-registration-note">회원가입 가능 인원을 확인하는 중입니다.</div>
-        <div id="auth-message" class="auth-message" hidden></div>
+            <div class="auth-brand-footnote">서비스형처럼 보이되, 운영은 단순하게 유지하는 방향으로 맞춘 구조입니다.</div>
+        </aside>
 
-        <form id="login-form" class="auth-form" data-auth-panel="login">
-            <div class="auth-stack">
-                <label for="login-username">아이디</label>
-                <input type="text" id="login-username" placeholder="영문 소문자/숫자/밑줄, 4~20자" autocomplete="username">
+        <section class="auth-panel">
+            <div class="auth-panel-head">
+                <span class="auth-panel-kicker">Account Access</span>
+                <h2 id="auth-panel-title" class="auth-panel-title">로그인</h2>
+                <p id="auth-panel-copy" class="auth-panel-copy">저장해둔 자산과 거래 내역을 바로 이어서 관리하세요.</p>
             </div>
-            <div class="auth-stack">
-                <label for="login-password">비밀번호</label>
-                <input type="password" id="login-password" placeholder="8자 이상" autocomplete="current-password">
-            </div>
-            <button type="submit" class="btn-main auth-submit" data-auth-submit>로그인</button>
-        </form>
 
-        <form id="signup-form" class="auth-form" data-auth-panel="signup" hidden>
-            <div class="auth-stack">
-                <label for="signup-username">아이디</label>
-                <input type="text" id="signup-username" placeholder="영문 소문자/숫자/밑줄, 4~20자" autocomplete="username">
+            <div class="auth-tabs">
+                <button type="button" class="auth-tab active" data-auth-mode="login">로그인</button>
+                <button type="button" class="auth-tab" data-auth-mode="signup">회원가입</button>
+                <button type="button" class="auth-tab" data-auth-mode="recovery">비밀번호 찾기</button>
             </div>
-            <div class="auth-stack">
-                <label for="signup-password">비밀번호</label>
-                <input type="password" id="signup-password" placeholder="8자 이상" autocomplete="new-password">
-            </div>
-            <div class="auth-stack">
-                <label for="signup-password-confirm">비밀번호 확인</label>
-                <input type="password" id="signup-password-confirm" placeholder="비밀번호 다시 입력" autocomplete="new-password">
-            </div>
-            <div class="auth-question-bank">
-                <strong>보안질문 10개 중 3개를 골라서 답변까지 저장하세요.</strong>
-                <ol id="signup-question-bank" class="auth-question-list"></ol>
-            </div>
-            <div class="auth-question-row" data-signup-question-row>
-                <div class="auth-stack">
-                    <label>질문 1</label>
-                    <select data-signup-question-select></select>
-                </div>
-                <div class="auth-stack">
-                    <label>답변 1</label>
-                    <input type="text" data-signup-question-answer placeholder="정확히 기억할 수 있는 답변" autocomplete="off">
-                </div>
-            </div>
-            <div class="auth-question-row" data-signup-question-row>
-                <div class="auth-stack">
-                    <label>질문 2</label>
-                    <select data-signup-question-select></select>
-                </div>
-                <div class="auth-stack">
-                    <label>답변 2</label>
-                    <input type="text" data-signup-question-answer placeholder="정확히 기억할 수 있는 답변" autocomplete="off">
-                </div>
-            </div>
-            <div class="auth-question-row" data-signup-question-row>
-                <div class="auth-stack">
-                    <label>질문 3</label>
-                    <select data-signup-question-select></select>
-                </div>
-                <div class="auth-stack">
-                    <label>답변 3</label>
-                    <input type="text" data-signup-question-answer placeholder="정확히 기억할 수 있는 답변" autocomplete="off">
-                </div>
-            </div>
-            <button type="submit" class="btn-main auth-submit" data-auth-submit>회원가입</button>
-            <div class="auth-helper">아이디는 모두 소문자로 저장되고, 최대 50명까지만 가입할 수 있게 제한합니다.</div>
-        </form>
 
-        <form id="recovery-form" class="auth-form" data-auth-panel="recovery" hidden>
-            <div class="auth-stack">
-                <label for="recovery-username">아이디</label>
-                <input type="text" id="recovery-username" placeholder="가입한 아이디" autocomplete="username">
-            </div>
-            <button type="button" id="recovery-load-btn" class="btn-main auth-submit" data-auth-submit>질문 불러오기</button>
-            <div id="recovery-hint" class="auth-helper">질문 3개를 연속으로 5번 틀리면 30분 동안 다시 시도할 수 없습니다.</div>
-            <div id="recovery-question-wrap" class="auth-recovery-wrap" hidden>
-                <div id="recovery-question-list" class="auth-recovery-wrap"></div>
+            <div id="auth-registration-note" class="auth-registration-note" hidden>회원가입 가능 인원을 확인하는 중입니다.</div>
+            <div id="auth-message" class="auth-message" hidden></div>
+
+            <form id="login-form" class="auth-form" data-auth-panel="login">
+                <div class="auth-form-intro">회원가입이 끝난 계정으로 바로 로그인할 수 있습니다. 테스트나 운영 모두 이 화면이 기본 진입점입니다.</div>
                 <div class="auth-stack">
-                    <label for="recovery-password">새 비밀번호</label>
-                    <input type="password" id="recovery-password" placeholder="8자 이상" autocomplete="new-password">
+                    <label for="login-username">아이디</label>
+                    <input type="text" id="login-username" placeholder="영문 소문자/숫자/밑줄, 4~20자" autocomplete="username">
                 </div>
                 <div class="auth-stack">
-                    <label for="recovery-password-confirm">새 비밀번호 확인</label>
-                    <input type="password" id="recovery-password-confirm" placeholder="비밀번호 다시 입력" autocomplete="new-password">
+                    <label for="login-password">비밀번호</label>
+                    <input type="password" id="login-password" placeholder="8자 이상" autocomplete="current-password">
                 </div>
-                <button type="submit" class="btn-main auth-submit" data-auth-submit>답변 확인 후 비밀번호 변경</button>
-            </div>
-        </form>
+                <button type="submit" class="btn-main auth-submit" data-auth-submit>로그인</button>
+                <div class="auth-helper">아이디를 잊지 않았다면 이 화면만으로 바로 진입하면 됩니다.</div>
+            </form>
+
+            <form id="signup-form" class="auth-form" data-auth-panel="signup" hidden>
+                <div class="auth-form-intro">가입은 세 단계입니다. 아이디를 정하고, 비밀번호를 입력하고, 보안질문 3개와 답변을 저장하면 끝입니다.</div>
+                <div class="auth-stack">
+                    <label for="signup-username">아이디</label>
+                    <input type="text" id="signup-username" placeholder="영문 소문자/숫자/밑줄, 4~20자" autocomplete="username">
+                </div>
+                <div class="auth-stack">
+                    <label for="signup-password">비밀번호</label>
+                    <input type="password" id="signup-password" placeholder="8자 이상" autocomplete="new-password">
+                </div>
+                <div class="auth-stack">
+                    <label for="signup-password-confirm">비밀번호 확인</label>
+                    <input type="password" id="signup-password-confirm" placeholder="비밀번호 다시 입력" autocomplete="new-password">
+                </div>
+                <details class="auth-details">
+                    <summary>보안질문 후보 10개 보기</summary>
+                    <div class="auth-question-bank">
+                        <strong>아래 질문 중 3개를 고르고, 나중에 다시 떠올릴 수 있는 답변으로 저장하세요.</strong>
+                        <ol id="signup-question-bank" class="auth-question-list"></ol>
+                    </div>
+                </details>
+                <div class="auth-question-row" data-signup-question-row>
+                    <div class="auth-question-row-head">
+                        <span class="auth-step-badge">1</span>
+                        <span class="auth-step-title">첫 번째 보안질문</span>
+                    </div>
+                    <div class="auth-stack">
+                        <label>질문 선택</label>
+                        <select data-signup-question-select></select>
+                    </div>
+                    <div class="auth-stack">
+                        <label>답변 입력</label>
+                        <input type="text" data-signup-question-answer placeholder="정확히 기억할 수 있는 답변" autocomplete="off">
+                    </div>
+                </div>
+                <div class="auth-question-row" data-signup-question-row>
+                    <div class="auth-question-row-head">
+                        <span class="auth-step-badge">2</span>
+                        <span class="auth-step-title">두 번째 보안질문</span>
+                    </div>
+                    <div class="auth-stack">
+                        <label>질문 선택</label>
+                        <select data-signup-question-select></select>
+                    </div>
+                    <div class="auth-stack">
+                        <label>답변 입력</label>
+                        <input type="text" data-signup-question-answer placeholder="정확히 기억할 수 있는 답변" autocomplete="off">
+                    </div>
+                </div>
+                <div class="auth-question-row" data-signup-question-row>
+                    <div class="auth-question-row-head">
+                        <span class="auth-step-badge">3</span>
+                        <span class="auth-step-title">세 번째 보안질문</span>
+                    </div>
+                    <div class="auth-stack">
+                        <label>질문 선택</label>
+                        <select data-signup-question-select></select>
+                    </div>
+                    <div class="auth-stack">
+                        <label>답변 입력</label>
+                        <input type="text" data-signup-question-answer placeholder="정확히 기억할 수 있는 답변" autocomplete="off">
+                    </div>
+                </div>
+                <button type="submit" class="btn-main auth-submit" data-auth-submit>회원가입</button>
+                <div class="auth-helper">아이디는 모두 소문자로 저장되고, 남은 가입 가능 인원은 위 안내에서 확인할 수 있습니다.</div>
+            </form>
+
+            <form id="recovery-form" class="auth-form" data-auth-panel="recovery" hidden>
+                <div class="auth-form-intro">가입한 아이디를 입력하면 저장해둔 질문 3개를 불러옵니다. 질문 답변이 맞으면 새 비밀번호로 바로 교체합니다.</div>
+                <div class="auth-stack">
+                    <label for="recovery-username">아이디</label>
+                    <input type="text" id="recovery-username" placeholder="가입한 아이디" autocomplete="username">
+                </div>
+                <button type="button" id="recovery-load-btn" class="btn-main auth-submit" data-auth-submit>질문 불러오기</button>
+                <div id="recovery-hint" class="auth-helper">질문 3개를 연속으로 5번 틀리면 30분 동안 다시 시도할 수 없습니다.</div>
+                <div id="recovery-question-wrap" class="auth-recovery-wrap" hidden>
+                    <div id="recovery-question-list" class="auth-recovery-wrap"></div>
+                    <div class="auth-stack">
+                        <label for="recovery-password">새 비밀번호</label>
+                        <input type="password" id="recovery-password" placeholder="8자 이상" autocomplete="new-password">
+                    </div>
+                    <div class="auth-stack">
+                        <label for="recovery-password-confirm">새 비밀번호 확인</label>
+                        <input type="password" id="recovery-password-confirm" placeholder="비밀번호 다시 입력" autocomplete="new-password">
+                    </div>
+                    <button type="submit" class="btn-main auth-submit" data-auth-submit>답변 확인 후 비밀번호 변경</button>
+                </div>
+            </form>
+        </section>
     </div>
 </div>
 

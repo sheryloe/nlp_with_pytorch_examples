@@ -833,3 +833,37 @@
 ### Remaining Issues
 - Vercel에서 최신 commit으로 빌드되는지 확인 필요
 - 필요하면 `Redeploy`로 다시 배포
+## 2026-03-15 20:15 (Asia/Seoul)
+
+### User Requests
+- auth 첫 화면 UI가 서비스형답지 않다는 피드백
+- 로그인/회원가입/질문 UI를 더 정돈된 구조로 수정 후 commit/push 요청
+
+### Changes Applied
+- auth 화면 레이아웃 재구성
+  - `web/index.html`
+  - 좌측 브랜드/설명 패널 + 우측 인증 패널의 2열 구조로 변경
+  - 로그인 기본 진입점 강조
+  - 회원가입 질문 후보 10개는 `<details>`로 접어서 기본 노출 축소
+  - 질문 3개 입력을 step card 형태로 재배치
+  - recovery 화면도 단계 설명 중심으로 정리
+- auth 패널 메타 텍스트 동기화 추가
+  - `web/app.js`
+  - 탭 전환 시 제목/설명/가입 가능 인원 노출 상태를 모드별로 변경
+
+### Results
+- 로그인 화면이 기본 서비스 진입점처럼 보이도록 정리됨
+- 회원가입/복구 화면이 한 번에 들이붓는 형태에서 단계형 구조로 개선됨
+- 검증:
+  - `node --check web/app.js` 통과
+  - `node scripts/build-web.mjs` 통과
+
+### Git
+- Changed files:
+  - `web/index.html`
+  - `web/app.js`
+- New commit:
+  - 진행 전
+
+### Remaining Issues
+- commit/push 후 Vercel에서 최신 UI로 재배포되는지 확인 필요
