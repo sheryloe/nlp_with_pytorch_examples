@@ -1898,3 +1898,23 @@
 ### Remaining Issues
 - Notion MCP 인증 재연결 필요
 - 인증 복구 후 `Step 6` 페이지에 UTF-8 한글 원고 재적용 필요
+
+## 2026-03-16 01:00 (Asia/Seoul)
+
+### User Requests
+- Notion `Step 6` 페이지 한글 깨짐 수정 재시도 요청
+
+### Changes Applied
+- Notion `Step 6` 페이지 접근 재시도
+  - `https://www.notion.so/Step-6-ETF-32461b8ed53c81be8500c7c002c708e6`
+- 로컬 원고 재확인
+  - `docs/BUILD_STORY_STEP6.md`
+  - UTF-8 한글 본문 정상 확인
+
+### Results
+- `notion-fetch`, `read_mcp_resource` 모두 `Auth required`로 실패
+- 현재 세션에서는 Notion 본문 교체 작업을 진행할 수 없는 상태가 유지됨
+
+### Remaining Issues
+- Notion MCP 인증 복구 필요
+- 인증 복구 후 Step 6 페이지를 로컬 원고 기준으로 다시 덮어써야 함
