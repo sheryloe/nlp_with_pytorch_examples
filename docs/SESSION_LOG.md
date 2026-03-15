@@ -1057,3 +1057,61 @@
 ### Remaining Issues
 - `refresh-market-prices` Edge Function 재배포 필요
 - 재시도 후 실제 오류 문구 확인 필요
+
+## 2026-03-15 21:57 (Asia/Seoul)
+
+### User Requests
+- 현재 기능과 앞으로 추천할 기능을 기준으로 `README.md`와 GitHub Pages 정리
+- Tistory/SEO 스타일의 Step 1~5 빌드 스토리 구조 정리
+- Notion 부모 페이지 아래에 Step 1~5 하위페이지 생성 시도
+- 투자 화면 관리 열의 삭제 버튼 깨진 문자 수정
+
+### Changes Applied
+- 문서 전면 개편
+  - `README.md`
+  - 현재 서비스 구조, 구현 완료 기능, 추천 다음 기능, 환경변수, 빌드 스토리 개요로 전면 교체
+- GitHub Pages 랜딩 개편
+  - `docs/index.html`
+  - 서비스형 구조 기준 메타데이터, 현재 기능, 추천 로드맵, 5단계 빌드 스토리 요약으로 재작성
+- GitHub Pages SEO 보정
+  - `docs/site.webmanifest`
+  - `docs/sitemap.xml`
+- Notion 하위페이지용 초안 작성
+  - `docs/BUILD_STORY_STEPS.md`
+  - Step 1~5 제목, 검색 유입 키워드, 문제, 구현 이유, 기능 확인, 다음 단계 구조 정리
+- 투자 삭제 버튼 깨진 문자 수정
+  - `web/app.js`
+  - 투자 / 거래 / 자산 삭제 버튼을 휴지통 아이콘으로 교체
+
+### Verification
+- `node --check web/app.js` 통과
+- `node scripts/build-web.mjs` 통과
+
+### Results
+- README와 GitHub Pages가 기존 로컬 FastAPI/SQLite 소개에서 현재 Supabase + Vercel 서비스 구조 설명으로 전환됨
+- 현재 기능과 추천 다음 기능이 같은 메시지로 정리됨
+- Notion용 5단계 스토리 초안이 로컬에 준비됨
+- 투자 관리 열 삭제 버튼이 `🗑` 아이콘으로 교체됨
+
+### Notion Blocker
+- 주신 API 토큰으로 부모 페이지 조회를 시도했지만 Notion API가 아래 오류를 반환함
+  - `object_not_found`
+  - `Could not find page with ID ... Make sure the relevant pages and databases are shared with your integration "donggri".`
+- 즉, 부모 페이지를 Integration `donggri`에 공유해야 하위페이지 생성이 가능함
+
+### Git
+- Feature commit:
+  - `4d110b5a8031ab67a1f37431c8e18c218835e32f`
+  - `docs: refresh product docs and pages for service rollout`
+- Changed files:
+  - `README.md`
+  - `docs/index.html`
+  - `docs/site.webmanifest`
+  - `docs/sitemap.xml`
+  - `docs/BUILD_STORY_STEPS.md`
+  - `web/app.js`
+  - `docs/SESSION_LOG.md`
+
+### Remaining Issues
+- Notion 부모 페이지를 Integration `donggri`에 공유해야 Step 1~5 하위페이지 생성 가능
+- `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 확인 필요
