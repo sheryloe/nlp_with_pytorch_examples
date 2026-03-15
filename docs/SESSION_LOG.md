@@ -1170,3 +1170,36 @@
 
 ### Remaining Issues
 - `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 확인 필요
+
+## 2026-03-15 22:36 (Asia/Seoul)
+
+### User Requests
+- GitHub Pages는 Notion/빌드 스토리 언급 없이 제품과 코드 구조 중심으로 다시 구성
+- 스크린샷은 작은 카드형이 아니라 더 크게, 전체 화면 위주로 보이도록 수정
+
+### Changes Applied
+- GitHub Pages 랜딩 재구성
+  - `docs/index.html`
+  - Notion 링크, 빌드 스토리 섹션, 관련 내비게이션 제거
+  - 제품 소개, 현재 기능, 전체 화면 스크린샷, 서비스 구조, 코드 구조, 추천 로드맵, FAQ만 남기도록 재작성
+- GitHub Pages 스타일 재작성
+  - `docs/styles.css`
+  - 영웅 섹션 아래 대형 스크린샷 배치
+  - 대시보드 / 투자 화면을 전체 폭에 가깝게 크게 보여주는 패널 구조로 교체
+  - 서비스/코드 소개 섹션 중심의 레이아웃으로 정리
+
+### Verification
+- `docs/index.html`, `docs/styles.css`에서 `Notion`, `빌드 스토리`, `notion.so` 문자열 제거 확인
+
+### Results
+- GitHub Pages가 빌드 스토리 허브가 아니라 제품/코드 소개 페이지로 다시 정리됨
+- 캡처 이미지는 작은 카드 배치 대신 큰 화면 중심 섹션으로 교체됨
+
+### Git
+- Changed files:
+  - `docs/index.html`
+  - `docs/styles.css`
+  - `docs/SESSION_LOG.md`
+
+### Remaining Issues
+- `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 확인 필요
