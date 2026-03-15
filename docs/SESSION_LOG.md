@@ -1171,6 +1171,35 @@
 ### Remaining Issues
 - `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 확인 필요
 
+## 2026-03-15 23:12 (Asia/Seoul)
+
+### User Requests
+- GitHub Pages 포털형 레이아웃은 유지하되, 16:9 화면에서 글씨가 너무 커서 여러 줄로 과하게 꺾이는 문제를 줄여달라고 요청
+
+### Changes Applied
+- GitHub Pages 타이포 스케일 조정
+  - `docs/index.html`
+  - 검색 밴드 핵심 문구를 더 짧게 압축
+  - 메인 헤드라인 강제 줄바꿈 제거
+- GitHub Pages 밀도 조정
+  - `docs/styles.css`
+  - 전체 최대 폭 확대
+  - 상단 액션, 검색 밴드, 빠른 링크, 리드 헤드라인, 모듈 카드, 구조 카드, 로드맵 카드, FAQ, 푸터의 글자 크기와 패딩 축소
+  - 16:9 화면에서 카드 높이와 줄 수가 과하게 늘어나지 않도록 line-height와 max-width 보정
+
+### Results
+- 포털형 레이아웃은 유지하면서도 메인 텍스트와 카드 텍스트가 덜 부풀어 보이도록 조정됨
+- 검색 밴드와 메인 헤드라인의 줄바꿈 밀도가 낮아짐
+
+### Git
+- Changed files:
+  - `docs/index.html`
+  - `docs/styles.css`
+  - `docs/SESSION_LOG.md`
+
+### Remaining Issues
+- `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 확인 필요
+
 ## 2026-03-15 23:03 (Asia/Seoul)
 
 ### User Requests
