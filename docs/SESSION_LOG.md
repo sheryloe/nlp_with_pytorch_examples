@@ -1200,6 +1200,34 @@
 ### Remaining Issues
 - `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 검증이 한 번 더 필요
 
+## 2026-03-15 23:35 (Asia/Seoul)
+
+### User Requests
+- GitHub Pages 랜딩 페이지에도 GitHub Wiki 연결 추가
+
+### Changes Applied
+- `docs/index.html`
+  - 상단 `utility-bar`에 `Wiki` 링크 추가
+  - 메인 히어로 액션 버튼에 `Wiki` 링크 추가
+  - 구조 설명의 `Repository` 카드 영역에 `wiki/` 문서 관리 카드 추가
+  - 하단 footer에 `GitHub Wiki 바로가기` 링크 추가
+  - JSON-LD `sameAs`에 GitHub Wiki와 실제 앱 주소 반영
+
+### Verification
+- `docs/index.html`에서 위키 링크 4개 위치와 `sameAs` 메타 반영 확인
+
+### Results
+- GitHub Pages 랜딩에서 저장소뿐 아니라 GitHub Wiki로도 바로 이동 가능해짐
+- 제품 소개 페이지, 저장소, 위키 간 연결이 더 자연스럽게 정리됨
+
+### Git
+- Changed files:
+  - `docs/index.html`
+  - `docs/SESSION_LOG.md`
+
+### Remaining Issues
+- `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 검증이 한 번 더 필요
+
 ## 2026-03-15 23:30 (Asia/Seoul)
 
 ### User Requests
