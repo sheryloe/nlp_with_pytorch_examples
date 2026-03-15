@@ -1200,6 +1200,44 @@
 ### Remaining Issues
 - `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 검증이 한 번 더 필요
 
+## 2026-03-15 23:17 (Asia/Seoul)
+
+### User Requests
+- Notion Step 1~5 페이지를 다시 작성
+- 각 Step마다 약 1000~1500자 분량으로 늘리고, 예시와 실제 구현 맥락이 보이도록 장문형으로 재구성
+
+### Changes Applied
+- `docs/BUILD_STORY_STEPS.md`
+  - Step 1~5 원고를 전면 재작성
+  - 각 Step을 `문제 -> 왜 이렇게 구현했는가 -> 구현 포인트 -> 예시 -> 기능 확인 -> 다음 단계` 흐름으로 장문화
+  - 개요 메모 수준에서 실제 블로그 초안 수준으로 확장
+- Notion 페이지 업데이트
+  - 사용자 제공 Notion API 토큰으로 Step 1~5 페이지 본문 전체 교체
+  - 기존 본문을 비우고 새 원고 기준으로 다시 입력
+
+### Verification
+- 초안 분량 확인
+  - Step 1: 1318자
+  - Step 2: 1282자
+  - Step 3: 1250자
+  - Step 4: 1316자
+  - Step 5: 1217자
+- Notion API 재조회로 제목과 상단 블록 확인
+  - Step 1~5 모두 새 제목 반영 확인
+  - 상단 `추천 제목`, `검색 유입 키워드` 블록 정상 확인
+
+### Results
+- Notion Step 1~5 페이지가 짧은 메모형이 아니라 발행 가능한 장문 초안 형태로 다시 정리됨
+- 각 Step이 1000~1500자 범위 안에서 실제 구현 이유와 예시를 포함하도록 정돈됨
+
+### Git
+- Changed files:
+  - `docs/BUILD_STORY_STEPS.md`
+  - `docs/SESSION_LOG.md`
+
+### Remaining Issues
+- `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 검증이 한 번 더 필요
+
 ## 2026-03-15 23:12 (Asia/Seoul)
 
 ### User Requests
