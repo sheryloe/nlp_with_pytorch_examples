@@ -648,11 +648,29 @@ async function invokeEdgeFunction(functionName, body) {
     const { data, error } = await client.functions.invoke(functionName, { body });
     if (error) {
         let message = parseSupabaseError(error, `${functionName} 호출 실패`);
-        if (error.context && typeof error.context.json === "function") {
+        if (error.context && typeof error.context.text === "function") {
+            try {
+                const rawBody = await error.context.text();
+                if (rawBody) {
+                    try {
+                        const payload = JSON.parse(rawBody);
+                        if (payload?.error || payload?.message) {
+                            message = payload.error || payload.message;
+                        } else {
+                            message = rawBody;
+                        }
+                    } catch {
+                        message = rawBody;
+                    }
+                }
+            } catch {
+                // Fall back to the standard error parser when the function body is unavailable.
+            }
+        } else if (error.context && typeof error.context.json === "function") {
             try {
                 const payload = await error.context.json();
-                if (payload?.error) {
-                    message = payload.error;
+                if (payload?.error || payload?.message) {
+                    message = payload.error || payload.message;
                 }
             } catch {
                 // Fall back to the standard error parser when the function body is unavailable.

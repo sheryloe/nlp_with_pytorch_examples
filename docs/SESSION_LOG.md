@@ -939,3 +939,34 @@
 
 ### Remaining Issues
 - GitHub push 후 Vercel에서 최신 auth flow가 반영됐는지 확인 필요
+
+## 2026-03-15 20:46 (Asia/Seoul)
+
+### User Requests
+- 회원가입 테스트 시 `Edge Function returned a non-2xx status code` 오류 원인 점검
+- 원인 추적을 쉽게 하도록 프론트 에러 표시도 보강
+
+### Changes Applied
+- Edge Function 에러 본문 파싱 보강
+  - `web/app.js`
+  - `functions.invoke()` 실패 시 `error.context.text()`까지 읽어서 JSON / plain text 본문을 그대로 메시지로 표시하도록 보강
+- Supabase 공식 문서 기준 원인 재확인
+  - public endpoint 성격의 Edge Function은 JWT verification 해제 권장
+  - JWT verification이 켜진 상태에서 publishable key 또는 잘못된 key를 쓰면 `401 Invalid JWT`가 발생할 수 있음
+
+### Verification
+- `node --check web/app.js` 통과
+- `node scripts/build-web.mjs` 통과
+
+### Results
+- 다음 오류부터는 `non-2xx` 대신 실제 함수 응답 본문이 더 잘 노출되도록 개선됨
+- 회원가입/비밀번호 찾기용 `register-account`, `recover-account`는 Supabase Dashboard에서 JWT verification 설정 확인이 필요함
+
+### Git
+- Changed files:
+  - `web/app.js`
+  - `docs/SESSION_LOG.md`
+
+### Remaining Issues
+- Supabase Dashboard에서 `register-account`, `recover-account`의 JWT verification 설정 확인 필요
+- 필요 시 Vercel `SUPABASE_ANON_KEY`가 legacy anon key인지 확인 필요
