@@ -1171,6 +1171,39 @@
 ### Remaining Issues
 - `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 확인 필요
 
+## 2026-03-15 22:51 (Asia/Seoul)
+
+### User Requests
+- 지금까지 수행한 작업과 기능을 정리한 `명세서.md` 문서를 새로 만들고 커밋/푸시
+- 실제 가계부 화면 상단에 GitHub 레포지토리 링크를 노출
+
+### Changes Applied
+- 프로젝트 운영 문서 추가
+  - `명세서.md`
+  - 현재 운영 구조, 구현 기능, 수행한 주요 업무, 현재 문제점, 보완할 점, 추가하면 좋은 기능, 주요 파일 경로를 정리
+- 앱 헤더에 GitHub 레포지토리 버튼 추가
+  - `web/index.html`
+  - 사용자 배지/로그아웃/백업/복원 액션 옆에 `GitHub 레포` 링크 배치
+  - 앵커를 버튼처럼 보이도록 `a.btn-main` 스타일 보강
+
+### Verification
+- `node scripts/build-web.mjs`
+
+### Results
+- 저장소 루트에서 바로 확인 가능한 운영 명세 문서가 추가됨
+- 실제 가계부 화면에서 GitHub 레포지토리로 바로 이동 가능해짐
+
+### Git
+- Changed files:
+  - `명세서.md`
+  - `web/index.html`
+  - `docs/SESSION_LOG.md`
+- Main change commit:
+  - `f66205d` (`docs: add project specification and repository link`)
+
+### Remaining Issues
+- `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 검증이 한 번 더 필요
+
 ## 2026-03-15 23:18 (Asia/Seoul)
 
 ### User Requests
