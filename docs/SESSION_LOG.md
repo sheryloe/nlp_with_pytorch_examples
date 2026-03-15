@@ -1200,6 +1200,29 @@
 ### Remaining Issues
 - `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 검증이 한 번 더 필요
 
+## 2026-03-15 23:37 (Asia/Seoul)
+
+### User Requests
+- Donggri Ledger 관련 대화와 로그를 아카이브로 정리
+- 제목은 `동그리-가계부`로 두고, 나중에 다시 꺼내볼 수 있게 보관
+
+### Changes Applied
+- 아카이브 문서 추가
+  - `docs/archive/동그리-가계부.md`
+  - 프로젝트 개요, 주요 주소, 확정된 방향, 핵심 구현 결과, 산출물 경로, 주요 커밋, Notion/GitHub Wiki/GitHub Pages 상태, 남은 이슈, 재시작 체크리스트를 한 문서로 정리
+
+### Results
+- Donggri Ledger 관련 흐름을 한 번에 복구할 수 있는 회수용 아카이브 문서가 생성됨
+- 나중에 이 프로젝트를 다시 꺼낼 때 `docs/archive/동그리-가계부.md`만 읽어도 큰 맥락과 현재 상태를 빠르게 복원할 수 있게 됨
+
+### Git
+- Changed files:
+  - `docs/archive/동그리-가계부.md`
+  - `docs/SESSION_LOG.md`
+
+### Remaining Issues
+- `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 검증이 한 번 더 필요
+
 ## 2026-03-15 23:35 (Asia/Seoul)
 
 ### User Requests
