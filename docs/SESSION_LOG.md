@@ -867,3 +867,37 @@
 
 ### Remaining Issues
 - commit/push 후 Vercel에서 최신 UI로 재배포되는지 확인 필요
+
+## 2026-03-15 20:28 (Asia/Seoul)
+
+### User Requests
+- auth 첫 화면을 로그인 폼 1개만 보이는 기본 루트로 재구성
+- `회원가입`, `비밀번호 찾기`는 버튼 클릭 후 다음 step 화면으로 이동하도록 정리
+- 변경 후 commit / push 진행
+
+### Changes Applied
+- login-first auth shell로 마크업 단순화
+  - `web/index.html`
+  - 좌측 브랜드 패널 제거
+  - 로그인 폼만 기본 노출
+  - 로그인 하단 `회원가입`, `비밀번호 찾기` 링크 버튼 추가
+  - 회원가입 / 비밀번호 찾기 화면 상단에 `로그인으로 돌아가기` 버튼 추가
+
+### Verification
+- `node --check web/app.js` 통과
+- `node scripts/build-web.mjs` 통과
+
+### Results
+- 첫 진입 화면이 로그인 폼 하나만 보이는 구조로 변경됨
+- 회원가입 / 비밀번호 찾기는 별도 탭 노출 없이 다음 화면처럼 이동하는 흐름으로 정리됨
+
+### Git
+- Feature commit:
+  - `123865169ed985b637470e1c5cac178ad9ef6780`
+  - `feat: simplify auth flow to login-first screen`
+- Changed files:
+  - `web/index.html`
+  - `docs/SESSION_LOG.md`
+
+### Remaining Issues
+- GitHub push 후 Vercel에서 최신 auth 루트가 반영됐는지 확인 필요
