@@ -1200,6 +1200,41 @@
 ### Remaining Issues
 - `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 검증이 한 번 더 필요
 
+## 2026-03-15 23:23 (Asia/Seoul)
+
+### User Requests
+- Notion Step 원고가 단순 정리문처럼 보여 SEO형 블로그 유입 구조로 다시 작성
+- 필요하면 코드 샘플이나 HTML 구조 예시도 넣어달라는 요청
+
+### Changes Applied
+- `docs/BUILD_STORY_STEPS.md`
+  - Step 1~5를 SEO형 블로그 초안 구조로 전면 재작성
+  - 각 Step에 `메인 키워드`, `검색 의도`, `메타 제목`, `메타 설명`, `도입부`, `본문`, `코드 예시`, `체크 포인트`, `FAQ`, `마무리` 섹션 추가
+  - 기존 구현 정리문 톤에서 검색 유입용 블로그 글 톤으로 전환
+- Notion Step 1~5 재업데이트
+  - 새 원고 기준으로 각 페이지 본문 전체 교체
+  - 코드 예시는 Notion `code` 블록으로 입력되도록 반영
+
+### Verification
+- Notion API로 Step 1, 3, 5 상단 블록 구조 재확인
+  - `메인 키워드`
+  - `검색 의도`
+  - `메타 제목`
+  - `메타 설명`
+- Step 3 페이지에서 `html` 코드 블록 존재 확인
+
+### Results
+- Notion Step 페이지들이 개발 일지형이 아니라 SEO형 블로그 초안 구조로 다시 정리됨
+- 코드 예시와 HTML 메타 구조 샘플까지 포함된 상태로 저장됨
+
+### Git
+- Changed files:
+  - `docs/BUILD_STORY_STEPS.md`
+  - `docs/SESSION_LOG.md`
+
+### Remaining Issues
+- `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 검증이 한 번 더 필요
+
 ## 2026-03-15 23:17 (Asia/Seoul)
 
 ### User Requests
