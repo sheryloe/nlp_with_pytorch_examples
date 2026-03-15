@@ -970,3 +970,32 @@
 ### Remaining Issues
 - Supabase Dashboard에서 `register-account`, `recover-account`의 JWT verification 설정 확인 필요
 - 필요 시 Vercel `SUPABASE_ANON_KEY`가 legacy anon key인지 확인 필요
+
+## 2026-03-15 20:53 (Asia/Seoul)
+
+### User Requests
+- 회원가입 시 `Unexpected error`만 보이는 상황 해결
+- 실제 Edge Function / DB 오류 원문이 사용자 화면에 보이도록 보강
+
+### Changes Applied
+- Edge Function catch 메시지 보강
+  - `supabase/functions/register-account/index.ts`
+  - `supabase/functions/recover-account/index.ts`
+  - `Error` 인스턴스뿐 아니라 PostgREST / auth plain object의 `message`, `details`, `hint`, `code`까지 문자열로 조합해 반환하도록 `describeError()` 추가
+
+### Verification
+- `node scripts/build-web.mjs` 통과
+
+### Results
+- 다음 회원가입/비밀번호 찾기 실패부터는 `Unexpected error` 대신 실제 원인에 더 가까운 에러 문구가 노출되도록 준비됨
+- 이 변경은 Supabase Dashboard에서 두 Edge Function을 다시 배포해야 실제 반영됨
+
+### Git
+- Changed files:
+  - `supabase/functions/register-account/index.ts`
+  - `supabase/functions/recover-account/index.ts`
+  - `docs/SESSION_LOG.md`
+
+### Remaining Issues
+- `register-account`, `recover-account` Edge Function 재배포 필요
+- 재시도 후 실제 에러 문구 확인 필요

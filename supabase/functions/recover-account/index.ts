@@ -28,6 +28,33 @@ function fail(error: string, status = 200) {
     return jsonResponse({ ok: false, error }, status);
 }
 
+function describeError(error: unknown) {
+    if (error instanceof Error && error.message) {
+        return error.message;
+    }
+    if (typeof error === "string" && error.trim()) {
+        return error;
+    }
+    if (error && typeof error === "object") {
+        const parts = [
+            (error as { message?: string }).message,
+            (error as { error?: string }).error,
+            (error as { details?: string }).details,
+            (error as { hint?: string }).hint,
+            (error as { code?: string }).code,
+        ].filter((value): value is string => Boolean(value && String(value).trim()));
+        if (parts.length) {
+            return parts.join(" | ");
+        }
+        try {
+            return JSON.stringify(error);
+        } catch {
+            return "Unexpected error";
+        }
+    }
+    return "Unexpected error";
+}
+
 function normalizeUsername(value: unknown) {
     return String(value || "").trim().toLowerCase();
 }
@@ -224,7 +251,7 @@ Deno.serve(async (request) => {
         return ok();
     } catch (error) {
         return jsonResponse(
-            { ok: false, error: error instanceof Error ? error.message : "Unexpected error" },
+            { ok: false, error: describeError(error) },
             500
         );
     }
