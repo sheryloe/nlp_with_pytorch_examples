@@ -11,6 +11,17 @@
 - Wiki: https://github.com/sheryloe/donggri_gagyeobu/wiki
 - Wiki Source: [wiki/Home.md](./wiki/Home.md)
 
+## Latest Build Step
+
+- Step 6: 해외 주식과 ETF까지 감당하는 멀티통화 투자 구조 개편
+- Draft: [docs/BUILD_STORY_STEP6.md](./docs/BUILD_STORY_STEP6.md)
+- Notion: https://www.notion.so/Step-6-ETF-32461b8ed53c81be8500c7c002c708e6
+- 핵심 변화
+  - `investments`에 `market`, `currency`, `fx_rate_krw`, `price_source` 추가
+  - 실시간 종목 입력을 `심볼 검색 -> 결과 선택 -> 추가` 흐름으로 변경
+  - 투자 표는 원통화 가격과 원화 환산값을 함께 표시
+  - `refresh-market-prices`는 원통화 가격 저장 + 환율 분리 방식으로 수정
+
 ## Current Snapshot
 
 - Frontend: 정적 웹 앱
@@ -69,6 +80,8 @@
 ### 5. Investments
 
 - 주식 / 코인 / ETF / 펀드 관리
+- 국내/해외 시장 구분과 통화(`KRW`, `USD`) 관리
+- 심볼 검색 후 선택 기반 투자 추가
 - 투자 원금, 평가금, 손익, 수익률 계산
 - 실시간 시세 새로고침
 - 펀드 현재가 수동 반영
@@ -120,6 +133,8 @@
 - GitHub Pages 소개 페이지 구성
 - 앱 화면 내 GitHub 레포 링크 추가
 - 운영 문서 `명세서.md` 추가
+- 해외 주식/ETF/코인 대응 멀티통화 투자 구조 개편
+- 심볼 검색 기반 투자 추가 흐름 반영
 
 ### 현재 문제점
 
@@ -127,6 +142,7 @@
 - 외부 시세 API 의존 구간은 응답 실패나 지연 가능성이 있음
 - 자동 테스트가 부족해서 UI 회귀를 수동 확인에 많이 의존하고 있음
 - 운영용 에러 모니터링과 가입 현황 대시보드가 아직 없음
+- 종목 검색 결과의 품질은 Yahoo 검색 응답 정확도에 영향을 받음
 
 ## Recommended Next Work
 

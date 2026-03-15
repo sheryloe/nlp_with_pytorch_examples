@@ -5,6 +5,7 @@
 현재 기준으로 먼저 챙겨야 할 문제는 아래와 같습니다.
 
 - `refresh-market-prices` Edge Function 재배포 후 실제 시세 새로고침 검증
+- `search-market-symbols` 검색 정확도와 결과 품질 검증
 - 외부 시세 API 실패 시 사용자 메시지 보완
 - 자동 테스트 부족
 - 운영용 에러 모니터링 부재
@@ -16,6 +17,7 @@
 
 - 회원가입 / 로그인 / 비밀번호 찾기 E2E 테스트
 - 투자 시세 갱신 실패 시 재시도 UX 강화
+- 시장/통화별 투자 입력 가이드 문구 보강
 - 배포 체크리스트 문서화
 - README / GitHub Pages / Wiki / 앱 내부 문구 통일
 - 전체화면 스크린샷 품질 개선
@@ -56,4 +58,5 @@ Donggri Ledger는 아래 방향으로 더 좋아질 수 있습니다.
 
 - [Product Overview](./Product-Overview.md)
 - [Feature Guide](./Feature-Guide.md)
+- [Build Story](./Build-Story.md)
 - [Operations and Deployment](./Operations-and-Deployment.md)

@@ -1764,3 +1764,52 @@
 - Supabase SQL Editor에서 최신 `supabase/schema.sql`을 다시 실행해야 함
 - Supabase Dashboard에서 `refresh-market-prices`, `search-market-symbols` 두 Edge Function을 최신 코드로 다시 배포해야 함
 - Vercel 반영 후 실제 투자 탭에서 `심볼 검색 -> 추가 -> 실시간 가격 새로고침` 검증이 한 번 더 필요
+## 2026-03-16 00:35 (Asia/Seoul)
+
+### User Requests
+- 현재 투자 모델 개편 기준으로 다음 단계 Step 문서를 같은 SEO 구조로 작성
+- 새 Step를 Notion 하위 페이지에 추가
+- GitHub Wiki와 `README.md`에도 최신 Step 요약과 관련 링크 반영
+
+### Changes Applied
+- Step 6 빌드 스토리 초안 추가
+  - `docs/BUILD_STORY_STEP6.md`
+  - 주제: 해외 주식/ETF 대응 멀티통화 투자 구조 개편
+- 빌드 스토리 인덱스에 Step 6 분리 관리 안내 추가
+  - `docs/BUILD_STORY_STEPS.md`
+- README 보강
+  - `README.md`
+  - `Latest Build Step` 섹션 추가
+  - 투자 기능 설명과 현재 상태/문제점에 멀티통화 투자 개편 내용 반영
+- 저장소 내 위키 소스 보강
+  - `wiki/Build-Story.md`
+  - `wiki/Home.md`
+  - `wiki/Feature-Guide.md`
+  - `wiki/Roadmap.md`
+  - `wiki/_Sidebar.md`
+- Notion 하위 페이지 생성
+  - `Step 6. 해외 주식과 ETF까지 감당하는 멀티통화 투자 구조로 개편하기`
+  - URL: `https://www.notion.so/Step-6-ETF-32461b8ed53c81be8500c7c002c708e6`
+- 실제 GitHub Wiki 원격 반영
+  - remote: `https://github.com/sheryloe/donggri_gagyeobu.wiki.git`
+  - wiki commit: `9768c20`
+
+### Results
+- Step 1~5 흐름과 같은 톤의 Step 6 SEO형 초안을 로컬/Notion/위키에 모두 연결함
+- README에서도 최신 투자 모델 개편 내용을 바로 확인할 수 있게 됨
+- GitHub Wiki 탭에서도 Build Story 문서를 통해 Step 6 맥락을 바로 따라갈 수 있게 됨
+
+### Git
+- Pending repo files:
+  - `README.md`
+  - `docs/BUILD_STORY_STEPS.md`
+  - `docs/BUILD_STORY_STEP6.md`
+  - `wiki/Build-Story.md`
+  - `wiki/Home.md`
+  - `wiki/Feature-Guide.md`
+  - `wiki/Roadmap.md`
+  - `wiki/_Sidebar.md`
+
+### Remaining Issues
+- 로컬 저장소 문서 변경분 커밋/푸시 필요
+- GitHub Pages에는 위키 링크는 이미 있지만 Step 6 빌드 스토리 자체를 별도 노출할지 추후 판단 가능

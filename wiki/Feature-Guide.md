@@ -73,6 +73,9 @@
 지원 기능:
 
 - 주식 / 코인 / ETF / 펀드 등록
+- 국내/해외 시장 구분
+- 원통화(`KRW`, `USD`) 기준 평균매수가/현재가 관리
+- 심볼 검색 결과 선택 기반 종목 추가
 - 현재가 반영
 - 실시간 가격 새로고침
 - 펀드 현재가 수동 입력
@@ -81,6 +84,7 @@
 현재 운영상 체크 포인트:
 
 - 실시간 시세 새로고침 Edge Function 검증
+- 검색 결과 품질과 종목 선택 UX 확인
 - 외부 시세 API 실패 시 메시지 개선
 
 ## Operations
@@ -96,5 +100,6 @@
 ## Related Pages
 
 - [Product Overview](./Product-Overview.md)
+- [Build Story](./Build-Story.md)
 - [Architecture](./Architecture.md)
 - [Operations and Deployment](./Operations-and-Deployment.md)

@@ -10,6 +10,7 @@ Donggri Ledger는 `Supabase + Vercel + GitHub` 조합으로 운영하는 개인 
 | App | https://donggri-gagyeobu.vercel.app/ | 실제 운영 중인 가계부 앱 |
 | GitHub Pages | https://sheryloe.github.io/donggri_gagyeobu/ | 제품 소개 랜딩 페이지 |
 | Repository | https://github.com/sheryloe/donggri_gagyeobu | 소스 코드 저장소 |
+| Build Story | [Build Story](./Build-Story.md) | Step 1~6 빌드 스토리 요약 |
 | Product Overview | [Product Overview](./Product-Overview.md) | 제품 목표와 화면 구조 |
 | Feature Guide | [Feature Guide](./Feature-Guide.md) | 현재 기능과 사용자 흐름 |
 | Architecture | [Architecture](./Architecture.md) | 서비스 구조와 데이터 흐름 |
@@ -30,9 +31,10 @@ Donggri Ledger는 `Supabase + Vercel + GitHub` 조합으로 운영하는 개인 
 
 1. [Product Overview](./Product-Overview.md)
 2. [Feature Guide](./Feature-Guide.md)
-3. [Architecture](./Architecture.md)
-4. [Operations and Deployment](./Operations-and-Deployment.md)
-5. [Roadmap](./Roadmap.md)
+3. [Build Story](./Build-Story.md)
+4. [Architecture](./Architecture.md)
+5. [Operations and Deployment](./Operations-and-Deployment.md)
+6. [Roadmap](./Roadmap.md)
 
 ## Core Experience
 
@@ -53,7 +55,7 @@ Donggri Ledger는 `Supabase + Vercel + GitHub` 조합으로 운영하는 개인 
 
 - 로그인/회원가입/복구 UX 안정화
 - 카드 결제예정과 자산 잔액 흐름 정합성 유지
-- 투자 시세 갱신 흐름 검증
+- 투자 시세 갱신과 멀티통화 렌더링 검증
 - GitHub Pages, README, Wiki의 정보 일관성 유지
 
 ## Wiki Structure
@@ -62,6 +64,7 @@ Donggri Ledger는 `Supabase + Vercel + GitHub` 조합으로 운영하는 개인 
 | --- | --- |
 | [Product Overview](./Product-Overview.md) | 제품 소개, 사용자 가치, 탭 구성 |
 | [Feature Guide](./Feature-Guide.md) | 기능별 사용 흐름과 핵심 포인트 |
+| [Build Story](./Build-Story.md) | Step 1~6 진행 과정과 최신 개편 배경 |
 | [Architecture](./Architecture.md) | 프론트/DB/함수/보안 구조 |
 | [Operations and Deployment](./Operations-and-Deployment.md) | 로컬 빌드, 배포, 환경변수, 운영 주의사항 |
 | [Roadmap](./Roadmap.md) | 현재 이슈, 보완점, 다음 기능 |

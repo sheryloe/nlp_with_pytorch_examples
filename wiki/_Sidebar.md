@@ -3,6 +3,7 @@
 - [Home](./Home.md)
 - [Product Overview](./Product-Overview.md)
 - [Feature Guide](./Feature-Guide.md)
+- [Build Story](./Build-Story.md)
 - [Architecture](./Architecture.md)
 - [Operations and Deployment](./Operations-and-Deployment.md)
 - [Roadmap](./Roadmap.md)
