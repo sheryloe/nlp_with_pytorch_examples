@@ -1848,3 +1848,32 @@
 
 ### Remaining Issues
 - `refresh-market-prices`, `search-market-symbols` 최신 코드 재배포와 실사용 검증은 별도로 남아 있음
+
+## 2026-03-16 00:41 (Asia/Seoul)
+
+### User Requests
+- 지금 기준으로 다음에 바로 이어서 할 일을 식별해 `명세서.md`에 업데이트
+- 현재 상태를 정리하고 이번 세션을 마무리
+
+### Changes Applied
+- 명세서에 즉시 실행용 우선순위 섹션 추가
+  - `명세서.md`
+  - `## 10. 지금 바로 할 일` 신설
+  - 1순위: Supabase SQL 재실행, Edge Function 재배포, Vercel 배포 확인, 실제 투자 흐름 검증
+  - 2순위: 투자 UX 안정화
+  - 3순위: 운영 자동화
+  - 4순위: 다음 기능 후보
+
+### Results
+- 다음 세션에서 `명세서.md`만 열어도 바로 실행할 작업 순서를 파악할 수 있게 됨
+- 남은 이슈가 추상적인 메모가 아니라 실제 실행 순서 기준으로 정리됨
+
+### Git
+- Commit:
+  - `ed18dfffd46e1d9aebf0dd0c14fa030a78a60fb5`
+  - `docs: add immediate action list to specification`
+- Changed files:
+  - `명세서.md`
+
+### Remaining Issues
+- `refresh-market-prices`, `search-market-symbols` 재배포와 실사용 검증은 여전히 우선 처리 항목
