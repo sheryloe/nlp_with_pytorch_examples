@@ -54,3 +54,20 @@ pip install -r requirements.txt
 - 카드/예산/시세 실패 알림 센터 추가
 - RLS 검증과 Edge Function 테스트 자동화
 - 가족/공동 사용 모드 검토
+- 2026-03-21: favicon ?? ??? ?? (Vercel 404 ??)
+
+## Clone And Run
+
+1. Install project dependencies with `npm install`.
+2. If you need the helper scripts, install Python dependencies with `pip install -r requirements.txt`.
+3. Configure Supabase client placeholders in `web/app-config.js`.
+
+## Required Config
+
+- `web/app-config.js` must define your Supabase URL and anon key.
+- Any server-side keys should stay outside the public client bundle.
+
+## Security Notes
+
+- RLS and auth policies should be validated before any shared deployment.
+- Backup and restore flows should be tested with non-production data first.
